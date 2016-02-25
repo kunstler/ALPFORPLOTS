@@ -478,13 +478,23 @@ plot_growth_error <-  function(df){
  abline(h = quantile(df$G, probs = c(0.0025, 0.9975), na.rm = TRUE),
         col = 'gray')
  quant_id <- plot_quant_reg(df, 'dbh1', 'G')
- cood_id <- cook_outlier_detec(df, 'dbh1', 'G')
+ cook_id <- cook_outlier_detec(df, 'dbh1', 'G')
 }
 
-## pdf(file.path('figures', 'growth_error.pdf'))
-## plot_growth_error(df_growth)
-## dev.off()
 
+save_growth_error <-  function(df){
+ plot(df$dbh1, df$G, cex = 0.2,
+      col = c('green', 'black')[unclass(factor(df$same_code_diam))],
+      xlab = 'Intial DBH (cm)', ylab = 'Diameter Growth (cm/yr.)')
+ abline(h = quantile(df$G, probs = c(0.0025, 0.9975), na.rm = TRUE),
+        col = 'gray')
+ quant_id <- plot_quant_reg(df, 'dbh1', 'G')
+ cook_id <- cook_outlier_detec(df, 'dbh1', 'G')
+ all_id <- c(as.character(quant_id), as.character(cook_id))
+ write.csv(data.frame(tree_id = all_id[duplicated(all_id)]),
+           file = file.path('output', 'tree_wrong_growth.csv'),
+           row.names = FALSE)
+}
 
 ## check if dead tree are alive again TODO
 save_tree_id_resurrected <- function(df){
@@ -532,6 +542,27 @@ plot_allo_error <- function(data){
       col = unclass(factor(vec_pb & !is.na(vec_pb))))
  lines(0:100, 0:100, col = 'red')
 }
+
+
+save_allo_error <-  function(data){
+ plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3)
+ quant_id_1<- plot_quant_reg(data, 'dbh', 'h_tot')
+ cook_outlier_detec(data, 'dbh', 'h_tot')
+ data$crown_r <- apply(data[ , paste0('crown_r', 1:4)],
+                       MARGIN = 1, mean, na.rm = TRUE)
+ plot(data$dbh, data$crown_r,
+      xlab = 'dbh', ylab= 'crown radius',
+      cex = 0.3)
+ quant_id_2 <- plot_quant_reg(data, 'dbh', 'crown_r')
+ cook_outlier_detec(data, 'dbh', 'crown_r')
+ vec_pb <- data$h_tot/apply(data[ , paste0('crown_h', 1:4)],
+                             MARGIN = 1, mean, na.rm = TRUE)<1
+ outlier_3 <- data$tree_id[vec_pb & !is.na(vec_pb)]
+ write.csv(data.frame(tree_id = unique(c(quant_id_1, quant_id_2, outlier_3))),
+           file = file.path('output', 'tree_wrong_allo.csv'),
+           row.names = FALSE)
+}
+
 
 ## pdf(file.path('figures', 'allo_error.pdf'))
 ## plot_allo_error(data_m)

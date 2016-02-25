@@ -97,3 +97,9 @@ targets:
 
   output/metadata_data_p.csv:
     command: generate_metadata_p(data_p)
+
+  output/tree_wrong_growth.csv:
+    command: save_growth_error(df_growth)
+
+  output/tree_wrong_allo.csv:
+    command: save_allo_error(data_m)
