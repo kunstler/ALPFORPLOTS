@@ -23,8 +23,17 @@ targets:
       - ms/metadata.html
       - ms/metadata.docx
 
+
+  figures:
+    depends:
+      - figures/allo_error.pdf
+      - figures/growth_error.pdf
+
+
   data:
     depends:
+      - list_data
+      - output/data_raw.txt
       - data_c
       - data_m
       - data_p
@@ -67,6 +76,7 @@ targets:
 
   list_data:
     command: read_all_data_and_clean()
+    depends: output/data_raw.txt
 
   data_c:
     command:  get_data_c()
@@ -103,3 +113,11 @@ targets:
 
   output/tree_wrong_allo.csv:
     command: save_allo_error(data_m)
+
+  figures/allo_error.pdf:
+    command: plot_allo_error(data_m)
+    plot: true
+
+  figures/growth_error.pdf:
+    command: plot_growth_error(df_growth)
+    plot: true

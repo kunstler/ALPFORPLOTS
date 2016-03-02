@@ -12,7 +12,7 @@ read_data_plot <- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sd
  names(data_plot) <- c('site_id', 'owner_id', 'year_first_mes', 'N_census',
                        'area', "x_min", "x_max", "y_min", "y_max", 'aspect',
                        'elevation', 'GPS_loc',
-                       'long', 'lat', 'x_lamb2_et', 'y_lamb2_et')
+                       'long', 'lat', 'x_lamb2_et', 'y_lamb2_et') 
  return(data_plot)
 }
 
@@ -59,6 +59,7 @@ list_test_names <- lapply(list_mesures,
 if (!all(unlist(list_test_names))) stop('error not sames names in data')
 data_mesures <- do.call(rbind, list_mesures)
 return(data_mesures)
+#done
 }
 
 
@@ -77,6 +78,7 @@ list_test_names <- lapply(list_carto,
 if (!all(unlist(list_test_names))) stop('error not sames names in data')
 data_carto <- do.call(rbind, list_carto)
 return(data_carto)
+# done
 }
 
 
@@ -285,6 +287,7 @@ remove_wrong_xy_tree_c <- function(d_m, d_c, d_p){
 
 
 read_all_data_and_clean <-  function(){
+ #### TEST   
  data_plot <- read_data_plot()
  data_m <- read_mesures_all()
  data_c <- read_carto_all()
@@ -293,7 +296,7 @@ read_all_data_and_clean <-  function(){
  data_c <- fix_all_c(data_c, data_m)
  data_m <- fix_all_m(data_c, data_m)
  check_all_sites_in_c_m(data_c, data_m, data_plot)
- pdf(file.path('figures', 'map_site_error.pdf'))
+ pdf(file.path('figures',  'map_site_error.pdf'))
  lapply(unique(data_c$site_id), plot_xy_map, data = data_c, d_p = data_plot)
  dev.off()
  data_m <- remove_wrong_xy_tree_m(data_m, data_c, data_plot)
@@ -491,7 +494,7 @@ save_growth_error <-  function(df){
  quant_id <- plot_quant_reg(df, 'dbh1', 'G')
  cook_id <- cook_outlier_detec(df, 'dbh1', 'G')
  all_id <- c(as.character(quant_id), as.character(cook_id))
- write.csv(data.frame(tree_id = all_id[duplicated(all_id)]),
+ write.csv(data.frame(tree_id = df[df$tree_id %in% all_id[duplicated(all_id)], ]),
            file = file.path('output', 'tree_wrong_growth.csv'),
            row.names = FALSE)
 }
@@ -518,13 +521,15 @@ save_tree_id_wrong_crown_h<- function(df_m){
  d <- df_m$tree_id[ vec_pb & !is.na(vec_pb)]
  print(dim(d))
  write.csv(d, file.path('output', 'data_wrong_crown_h_tree.csv'))
+ 
 }
 #save_tree_id_wrong_crown_h(data_m)
 
 # plots
 plot_allo_error <- function(data){
  par(mfrow = c(2, 2))
- plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3)
+ plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3,
+       col = unclass(factor(data$site_id)), pch = unclass(factor(data$site_id)))
  plot_quant_reg(data, 'dbh', 'h_tot')
  cook_outlier_detec(data, 'dbh', 'h_tot')
  data$crown_r <- apply(data[ , paste0('crown_r', 1:4)],
@@ -545,7 +550,9 @@ plot_allo_error <- function(data){
 
 
 save_allo_error <-  function(data){
- plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3)
+ plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3,
+      col = unclass(factor(data$site_id)))
+ abline(h=50)
  quant_id_1<- plot_quant_reg(data, 'dbh', 'h_tot')
  cook_outlier_detec(data, 'dbh', 'h_tot')
  data$crown_r <- apply(data[ , paste0('crown_r', 1:4)],
@@ -561,6 +568,13 @@ save_allo_error <-  function(data){
  write.csv(data.frame(tree_id = unique(c(quant_id_1, quant_id_2, outlier_3))),
            file = file.path('output', 'tree_wrong_allo.csv'),
            row.names = FALSE)
+
+ vec_pb <- (data$h_tot>50 & !is.na(data$h_tot)) | (data$crown_r>7 & !is.na(data$crown_r))
+ d <- data$tree_id[ vec_pb & !is.na(vec_pb)]
+ print(dim(d))
+ write.csv(d, file.path('output', 'data_wrong_allo2.csv'))
+
+
 }
 
 
