@@ -32,8 +32,7 @@ targets:
 
   data:
     depends:
-      - list_data
-      - output/data_raw.txt
+      - output/list_data.rds
       - data_c
       - data_m
       - data_p
@@ -41,6 +40,9 @@ targets:
       - output/metadata_data_c.csv
       - output/metadata_data_m.csv
       - output/metadata_data_p.csv
+      - output/table_plot.csv
+      - output/table_plot2.csv
+      - output/table_plot3.csv
 
   ms/metadata.md:
     knitr:
@@ -74,30 +76,32 @@ targets:
   output/df_growth.rds:
     command: save_data_growth(data_m)
 
-  list_data:
+  output/list_data.rds:
     command: read_all_data_and_clean()
-    depends: output/data_raw.txt
 
   data_c:
     command:  get_data_c()
     depends: output/data_c.rds
 
   output/data_c.rds:
-    command:  save_data_c(list_data)
+    command:  save_data_c()
+    depends: output/list_data.rds
 
   data_m:
     command:  get_data_m()
     depends: output/data_m.rds
 
   output/data_m.rds:
-    command:  save_data_m(list_data)
+    command:  save_data_m()
+    depends: output/list_data.rds
 
   data_p:
     command:  get_data_p()
     depends: output/data_p.rds
 
   output/data_p.rds:
-    command:  save_data_p(list_data)
+    command:  save_data_p()
+    depends: output/list_data.rds
 
   output/metadata_data_c.csv:
     command: generate_metadata_c(data_c)
@@ -121,3 +125,12 @@ targets:
   figures/growth_error.pdf:
     command: plot_growth_error(df_growth)
     plot: true
+
+  output/table_plot.csv:
+    command: table_plot(data_p)
+
+  output/table_plot2.csv:
+    command: table_stand(data_p, data_m, data_c)
+
+  output/table_plot3.csv:
+    command: table_stand_b(data_p, data_m, data_c)

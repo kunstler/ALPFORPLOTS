@@ -12,7 +12,7 @@ read_data_plot <- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sd
  names(data_plot) <- c('site_id', 'owner_id', 'year_first_mes', 'N_census',
                        'area', "x_min", "x_max", "y_min", "y_max", 'aspect',
                        'elevation', 'GPS_loc',
-                       'long', 'lat', 'x_lamb2_et', 'y_lamb2_et') 
+                       'long', 'lat', 'x_lamb2_et', 'y_lamb2_et')
  return(data_plot)
 }
 
@@ -87,7 +87,7 @@ return(data_carto)
 rename_data_c <- function(df){
 names(df) <- c('map_year', 'map_id', 'site_id', 'tree_id',
                    'quadrat_id', 'code_species',
-                   'x', 'y', 'z', 'year_birth') 
+                   'x', 'y', 'z', 'year_birth')
 df$tree_id <- df$map_id
 df$map_id <-  NULL
 return(df)
@@ -95,7 +95,7 @@ return(df)
 
 
 rename_data_m <- function(df){
-names(df) <- c('mesure_id', 'site_id', 'year', 'tree_id',
+names(df) <- c('measure_id', 'site_id', 'year', 'tree_id',
                    'code_status', 'code_diam', 'dbh', 'h_tot',
                    'crown_h1', 'crown_h2', 'crown_h3', 'crown_h4',
                    'crown_r1', 'crown_r2', 'crown_r3', 'crown_r4',
@@ -111,10 +111,10 @@ return(df)
 fix_species_code <-  function(df){
  old_name <- c('SOR', '', 'CHE', 'SA spp', 'ALI', 'BOU', 'ALIB', 'SO',
                  'AL spp', 'QU spp', 'IF', 'MER', 'SAP', 'ERP',
-               'FRE', 'BETU', 'CHA', 'ORM') 
+               'FRE', 'BETU', 'CHA', 'ORM')
  new_name <- c('SOAU', 'ND', 'QUSP', 'SASP', 'SOAR', 'BEPE', 'SOAR',
                'SOSP', 'ALSP', 'QUSP', 'TABA', 'PRAV', 'ABAL',
-               'ACPL', 'FREX', 'BEPE', 'CABE', 'ULSP') 
+               'ACPL', 'FREX', 'BEPE', 'CABE', 'ULSP')
  df$code_species <-  factor(df$code_species)
  names_species <- levels(df$code_species)
  names_species[match(old_name, names_species)] <- new_name
@@ -145,7 +145,7 @@ return(tree_id_remove)
 remove_tree_below_dbh_map <-  function(data_c, data_m){
 vec <- get_id_data_dbh_min(data_m)
 return(data_c[!(data_c$tree_id %in% vec), ])
-}    
+}
 
 remove_tree_below_dbh <-  function(data_m){
 return(data_m[data_m$dbh>=7.5 & !is.na(data_m$dbh), ])
@@ -184,7 +184,7 @@ sites_to_remove <- c('Bachat', 'Claret', 'Dent du Villard', 'La Cordeliere',
                      'Vercors4')
 
 return(df_c[!(df_c$site_id %in% sites_to_remove), ])
-}    
+}
 
 
 fix_all_c <-  function(df_c, df_m){
@@ -194,11 +194,11 @@ fix_all_c <-  function(df_c, df_m){
  df_c <- rm_data_missing_measure(df_c, df_m)
  df_c <- remove_site_c(df_c)
  df_c$x <-  as.numeric(df_c$x)
- df_c$y <-  as.numeric(df_c$y)    
+ df_c$y <-  as.numeric(df_c$y)
  df_c$x <-  as.numeric(df_c$x)
- df_c$z <-  as.numeric(df_c$z)    
- df_c$year_birth <-  as.integer(df_c$year_birth)    
- df_c$map_year<-  as.integer(df_c$map_year)    
+ df_c$z <-  as.numeric(df_c$z)
+ df_c$year_birth <-  as.integer(df_c$year_birth)
+ df_c$map_year<-  as.integer(df_c$map_year)
 
 return(df_c)
 }
@@ -211,6 +211,8 @@ fix_all_m <-  function(df_c, df_m){
  df_m$year <-  as.numeric(df_m$year)
  df_m$dbh <-  as.numeric(df_m$dbh)
  df_m$base_crown_m <-  NULL
+ if(sum(duplicated(df_m$measure_id))>0)
+     stop('duplicated measure_id')
  return(df_m)
 }
 
@@ -282,12 +284,12 @@ remove_wrong_xy_tree_c <- function(d_m, d_c, d_p){
                                        get_wrong_xy_tree_id,
                                        data = d_c, d_p = d_p))
  return(d_c[!d_c$tree_id %in% vec_wrong_xy_tree_id, ])
-}    
+}
 
 
 
 read_all_data_and_clean <-  function(){
- #### TEST   
+ #### TEST
  data_plot <- read_data_plot()
  data_m <- read_mesures_all()
  data_c <- read_carto_all()
@@ -303,15 +305,24 @@ read_all_data_and_clean <-  function(){
  data_c<- remove_wrong_xy_tree_c(data_m, data_c, data_plot)
  data_plot <- data_plot[data_plot$site_id %in% unique(data_c$site_id), ]
  print('done')
-return(list(c = data_c, m = data_m, p = data_plot))
+ saveRDS(list(c = data_c, m = data_m, p = data_plot), file.path('output', 'list_data.rds'))
 }
 
 
 ## list_data <- read_all_data_and_clean(path_samba, path_samba_r)
 
-save_data_c <-  function(list_d) saveRDS(list_d$c, file.path('output', 'data_c.rds'))
-save_data_m <-  function(list_d) saveRDS(list_d$m, file.path('output', 'data_m.rds'))
-save_data_p <-  function(list_d) saveRDS(list_d$p, file.path('output', 'data_p.rds'))
+save_data_c <-  function(){
+    list_d <- readRDS(file.path('output', 'list_data.rds'))
+    saveRDS(list_d$c, file.path('output', 'data_c.rds'))
+}
+save_data_m <-  function(){
+    list_d <- readRDS(file.path('output', 'list_data.rds'))
+    saveRDS(list_d$m, file.path('output', 'data_m.rds'))
+}
+save_data_p <-  function(){
+    list_d <- readRDS(file.path('output', 'list_data.rds'))
+    saveRDS(list_d$p, file.path('output', 'data_p.rds'))
+}
 
 
 get_data_c <-  function() readRDS(file.path('output', 'data_c.rds'))
@@ -375,7 +386,7 @@ data_sp(data_c)
 
 growth_dead_tree <- function(i, data, yy, j){
  dbh1 <- data[data$tree_id== j &
-              data$year == yy[i], 'dbh']  
+              data$year == yy[i], 'dbh']
  dbh2 <- data[data$tree_id== j &
               data$year == yy[i+1], 'dbh']
  df <- data.frame(tree_id = j,
@@ -394,7 +405,7 @@ growth_dead_tree <- function(i, data, yy, j){
 }
 
 
-growth_tree_all <- function(j, df){ 
+growth_tree_all <- function(j, df){
 years <- sort(df[df$tree_id== j, ]$year)
 list_t <- vector('list')
 list_t <- lapply(seq_len(length(years) -1), growth_dead_tree, df, years, j)
@@ -435,16 +446,6 @@ cook_outlier_detec <- function(df, x, y){
  return(a_out$tree_id)
 }
 
-mvoutlier_detec <- function(df, x, y){
- require(mvoutlier)
- df <-  df[complete.cases(df[, c(x, y)]), c(x, y)]
- x.out <- pcout(df, makeplot = FALSE)
- points(df[[x]][x.out$wfinal < quantile(x.out$wfinal, 0.07)],
-        df[[y]][x.out$wfinal < quantile(x.out$wfinal, 0.07)],
-        pch = c(3), col = 'blue')
-}
-    
-    
 
 plot_quant_reg <- function(df, x, y,
                            probs_vec = c(0.005, 0.995),
@@ -476,10 +477,7 @@ plot_quant_reg <- function(df, x, y,
 
 plot_growth_error <-  function(df){
  plot(df$dbh1, df$G, cex = 0.2,
-      col = c('green', 'black')[unclass(factor(df$same_code_diam))],
       xlab = 'Intial DBH (cm)', ylab = 'Diameter Growth (cm/yr.)')
- abline(h = quantile(df$G, probs = c(0.0025, 0.9975), na.rm = TRUE),
-        col = 'gray')
  quant_id <- plot_quant_reg(df, 'dbh1', 'G')
  cook_id <- cook_outlier_detec(df, 'dbh1', 'G')
 }
@@ -521,15 +519,14 @@ save_tree_id_wrong_crown_h<- function(df_m){
  d <- df_m$tree_id[ vec_pb & !is.na(vec_pb)]
  print(dim(d))
  write.csv(d, file.path('output', 'data_wrong_crown_h_tree.csv'))
- 
+
 }
 #save_tree_id_wrong_crown_h(data_m)
 
 # plots
 plot_allo_error <- function(data){
  par(mfrow = c(2, 2))
- plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3,
-       col = unclass(factor(data$site_id)), pch = unclass(factor(data$site_id)))
+ plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3)
  plot_quant_reg(data, 'dbh', 'h_tot')
  cook_outlier_detec(data, 'dbh', 'h_tot')
  data$crown_r <- apply(data[ , paste0('crown_r', 1:4)],
@@ -539,12 +536,15 @@ plot_allo_error <- function(data){
       cex = 0.3)
  plot_quant_reg(data, 'dbh', 'crown_r')
  cook_outlier_detec(data, 'dbh', 'crown_r')
- vec_pb <- data$h_tot/apply(data[ , paste0('crown_h', 1:4)],
-                             MARGIN = 1, mean, na.rm = TRUE)<1
- plot(data$h_tot, apply(data[ , paste0('crown_h', 1:4)],
-                        MARGIN = 1, mean, na.rm = TRUE),
+ data$crown_h <- apply(data[ , paste0('crown_h', 1:4)],
+                       MARGIN = 1, mean, na.rm = TRUE)
+ vec_pb <- data$h_tot/data$crown_h<1
+ plot(data$h_tot, data$crown_h,
       xlab = 'h', ylab= 'crown height',
-      col = unclass(factor(vec_pb & !is.na(vec_pb))))
+      col = unclass(factor(vec_pb & !is.na(vec_pb))),
+      cex = 0.3)
+ plot_quant_reg(data, 'h_tot', 'crown_h')
+ cook_outlier_detec(data, 'h_tot', 'crown_h')
  lines(0:100, 0:100, col = 'red')
 }
 
@@ -573,20 +573,101 @@ save_allo_error <-  function(data){
  d <- data$tree_id[ vec_pb & !is.na(vec_pb)]
  print(dim(d))
  write.csv(d, file.path('output', 'data_wrong_allo2.csv'))
-
-
 }
 
 
-## pdf(file.path('figures', 'allo_error.pdf'))
-## plot_allo_error(data_m)
-## dev.off()
-
 map_plots <- function(df_p){
- require(maps)   
+ require(maps)
  map ('france', xlim = c(5, 7.2), ylim = c(44, 46.5))
  points(df_p$long, df_p$lat, col = 'red')
 }
 
 
+## Tables for data paper
 
+# TABLE 1 PLOT DESCRIPTION site_id (check diff with plot_id) area, elvation, lat, long,
+
+table_plot <- function(df_p){
+require(maptools)
+require(sp)
+require(rgdal)
+df_p <- df_p[!is.na(df_p$x_lamb2_et), ]
+coordinates(df_p) <- c('x_lamb2_et', 'y_lamb2_et')
+proj4string(df_p) <- CRS("+init=epsg:27572")
+
+df_p2 <- spTransform(df_p,  CRS("+init=epsg:4326"))
+df_p$lat <-  df_p2$y_lamb2_et
+df_p$long <-  df_p2$x_lamb2_et
+list_res <- GetClimate(df_p)
+df_p$MAT <- list_res$MAT
+df_p$MAP <- list_res$MAP
+geol <- GetGeol(df_p)
+df_p$geol <-  geol
+table_p <- df_p[, c('site_id', 'area', 'elevation', 'lat',
+                    'long', 'MAT', 'MAP', 'geol')]
+write.csv(table_p, file.path('output', 'table_plot.csv'))
+}
+
+
+# TABLE 2 site_id year_first_meas N census, main species, N initial G initial
+
+table_stand<- function(df_p, df_m, df_c, treshold_sp= 0.1){
+require(dplyr)
+table_p2 <- df_p[, c("site_id", "area")]
+df <- left_join(df_m, df_c[, c('tree_id', 'code_species')], by = 'tree_id')
+table_p3 <- df %>% group_by(site_id) %>%
+                summarise(first_year = min(year),
+                          n_census = n_distinct(year))
+df <- df %>% filter(code_status %in% c('0000', '8881', '8882')) %>%
+         arrange(year) %>% distinct(tree_id)
+
+main_sp <- tapply(df$code_species,
+                  df$site_id,
+                  function(x) paste(names(table(x))[table(x)/
+                                                    length(x)>treshold_sp],
+                                    collapse = ' and '))
+n_init<- tapply(df$code_species,
+                df$site_id,
+                length)
+ba_init<- tapply(pi*df$dbh^2/4,
+                df$site_id,
+                sum)
+table_p4 <- data.frame(site_id = names(main_sp),
+                       main_sp = main_sp,
+                       n_init = n_init, ba_init = ba_init,
+                       stringsAsFactors = FALSE)
+tab <- left_join(table_p2, table_p3, by = 'site_id')
+tab <- left_join(tab, table_p4, by = 'site_id')
+tab$ba_init <- tab$ba_init/(tab$area * 10000)
+write.csv(tab, file.path('output', 'table_plot2.csv'))
+}
+
+# TABLE 3 diam min , n of height measure , n of crown radius measure, n of crown height measure, dead and stump atestablish Y/N , loc xy or quadrat
+
+# Table 4 spwecies code and species latin name
+
+table_stand_b<- function(df_p, df_m, df_c){
+require(dplyr)
+df_m <- df_m %>% rowwise()  %>%
+    mutate(crown_h = mean(c(crown_h1, crown_h2,
+                            crown_h3, crown_h4),
+                          na.rm = TRUE),
+           crown_r = mean(c(crown_r1, crown_r2,
+                            crown_r3, crown_r4),
+                          na.rm = TRUE))
+tab1 <- df_m %>% group_by( site_id) %>%
+    summarise(n_h = sum(!is.na(h_tot)),
+              n_crown_h = sum(!is.na(crown_h)),
+              n_crown_r = sum(!is.na(crown_r)))
+df <- df_m %>%
+         arrange(year) %>% distinct(tree_id)
+tab2 <- df %>% group_by(site_id) %>%
+    summarise(dead_init_tf = sum(code_status %in% c("9991", "9990"))>0)
+
+tab3 <- df_c%>% group_by(site_id) %>%
+    summarise(xy_tf = sum(!is.na(x))>0)
+
+tab <- left_join(tab1, tab2,  by = 'site_id')
+tab <- left_join(tab, tab3,  by = 'site_id')
+write.csv(tab, file.path('output', 'table_plot3.csv'))
+}
