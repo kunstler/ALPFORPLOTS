@@ -17,6 +17,7 @@ targets:
     depends:
       - manuscript
       - data
+      - figures
 
   manuscript:
     depends:
@@ -43,7 +44,7 @@ targets:
       - output/table_plot.csv
       - output/table_plot2.csv
       - output/table_plot3.csv
-
+      - output/data_wrong_allo2.csv
   ms/metadata.md:
     knitr:
       chdir: true
@@ -134,3 +135,6 @@ targets:
 
   output/table_plot3.csv:
     command: table_stand_b(data_p, data_m, data_c)
+
+  output/data_wrong_allo2.csv:
+    command: save_allo_error(data_m)

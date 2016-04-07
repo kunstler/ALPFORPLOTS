@@ -9,7 +9,7 @@
 
 ## INTRODUCTION
 
-TODO (Zianis, Muukkonen, Mäkipää, et al., 2005).
+TODO (Zianis, Muukkonen, Mäkipää, and Mencuccini, 2005).
 
 
 ![](figure/metadata__unnamed-chunk-2-1.png) 
@@ -30,7 +30,7 @@ Long-term stem inventory data from mountain forest plots in France.
 ### C. DATA SET DESCRIPTORS:
 **1. Originators**: The study was initiated by TODO.
 
-**2. Abstract**: We present repeated stem measurement data from 71 plots in mountain forests in France.
+**2. Abstract**: We present repeated stem measurement data from 0 plots in mountain forests in France.
 
 ### D. Key words
 
@@ -114,8 +114,8 @@ The following files are provided:
 |X                     |variables             |type               |unit          |definition          |
 |:---------------------|:---------------------|:------------------|:-------------|:-------------------|
 |map_year              |map_year              |integer            |NA            |NA                  |
-|site_id               |site_id               |character          |NA            |NA                  |
-|tree_id               |tree_id               |character          |NA            |NA                  |
+|plot_id               |plot_id               |character          |NA            |NA                  |
+|stem_id               |stem_id               |character          |NA            |NA                  |
 |quadrat_id            |quadrat_id            |integer            |NA            |NA                  |
 |code_species          |code_species          |character          |NA            |NA                  |
 |x                     |x                     |numeric            |NA            |NA                  |
@@ -126,10 +126,10 @@ The following files are provided:
 
 |X                     |variables             |type               |unit          |definition          |
 |:---------------------|:---------------------|:------------------|:-------------|:-------------------|
-|mesure_id             |mesure_id             |character          |NA            |NA                  |
-|site_id               |site_id               |character          |NA            |NA                  |
+|measure_id            |measure_id            |character          |NA            |NA                  |
+|plot_id               |plot_id               |character          |NA            |NA                  |
 |year                  |year                  |numeric            |NA            |NA                  |
-|tree_id               |tree_id               |character          |NA            |NA                  |
+|stem_id               |stem_id               |character          |NA            |NA                  |
 |code_status           |code_status           |character          |NA            |NA                  |
 |code_diam             |code_diam             |integer            |NA            |NA                  |
 |dbh                   |dbh                   |numeric            |NA            |NA                  |
@@ -148,7 +148,7 @@ The following files are provided:
 
 |X                       |variables               |type               |unit          |definition          |
 |:-----------------------|:-----------------------|:------------------|:-------------|:-------------------|
-|site_id                 |site_id                 |character          |NA            |NA                  |
+|plot_id                 |plot_id                 |character          |NA            |NA                  |
 |owner_id                |owner_id                |character          |NA            |NA                  |
 |year_first_mes          |year_first_mes          |integer            |NA            |NA                  |
 |N_census                |N_census                |integer            |NA            |NA                  |
@@ -170,8 +170,8 @@ The following files are provided:
 
 |file            |Nobs           |
 |:---------------|:--------------|
-|data_c          |22023          |
-|data_m          |46797          |
+|data_c          |21982          |
+|data_m          |46628          |
 |data_p          |71             |
 
 ## ACKNOWLEDGMENTS
