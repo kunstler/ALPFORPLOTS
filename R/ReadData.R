@@ -9,7 +9,7 @@ read_data_plot <- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sd
  data_plot <- read.xls(file.path(path_samba, 'données_autrestables',
                                  'metadonnees_placette_2015.xlsx'),
                        stringsAsFactors = FALSE)
- names(data_plot) <- c('site_id', 'owner_id', 'year_first_mes', 'N_census',
+ names(data_plot) <- c('plot_id', 'owner_id', 'year_first_mes', 'N_census',
                        'area', "x_min", "x_max", "y_min", "y_max", 'aspect',
                        'elevation', 'GPS_loc',
                        'long', 'lat', 'x_lamb2_et', 'y_lamb2_et')
@@ -85,22 +85,22 @@ return(data_carto)
 
 # rename data
 rename_data_c <- function(df){
-names(df) <- c('map_year', 'map_id', 'site_id', 'tree_id',
+names(df) <- c('map_year', 'map_id', 'plot_id', 'stem_id',
                    'quadrat_id', 'code_species',
                    'x', 'y', 'z', 'year_birth')
-df$tree_id <- df$map_id
+df$stem_id <- df$map_id
 df$map_id <-  NULL
 return(df)
 }
 
 
 rename_data_m <- function(df){
-names(df) <- c('measure_id', 'site_id', 'year', 'tree_id',
+names(df) <- c('measure_id', 'plot_id', 'year', 'stem_id',
                    'code_status', 'code_diam', 'dbh', 'h_tot',
                    'crown_h1', 'crown_h2', 'crown_h3', 'crown_h4',
                    'crown_r1', 'crown_r2', 'crown_r3', 'crown_r4',
                    'base_crown_h', 'strate')
-df$tree_id <- paste0(df$tree_id, df$site_id)
+df$stem_id <- paste0(df$stem_id, df$plot_id)
 return(df)
 }
 
@@ -132,19 +132,19 @@ return(df)
 }
 
 get_id_data_dbh_min<-  function(data_m){
-data_d_min<- tapply(data_m$dbh, INDEX = data_m$site_id, min, na.rm = TRUE)
+data_d_min<- tapply(data_m$dbh, INDEX = data_m$plot_id, min, na.rm = TRUE)
 data_dbh_max_tree<- tapply(data_m$dbh,
-                           INDEX = data_m$tree_id,
+                           INDEX = data_m$stem_id,
                            max, na.rm = TRUE)
 data_dbh_max_tree[data_dbh_max_tree == -Inf] <-  NA
-tree_id_remove <- names(data_dbh_max_tree)[data_dbh_max_tree <7.5 &
+stem_id_remove <- names(data_dbh_max_tree)[data_dbh_max_tree <7.5 &
                                            !is.na(data_dbh_max_tree)]
-return(tree_id_remove)
+return(stem_id_remove)
 }
 
 remove_tree_below_dbh_map <-  function(data_c, data_m){
 vec <- get_id_data_dbh_min(data_m)
-return(data_c[!(data_c$tree_id %in% vec), ])
+return(data_c[!(data_c$stem_id %in% vec), ])
 }
 
 remove_tree_below_dbh <-  function(data_m){
@@ -152,18 +152,18 @@ return(data_m[data_m$dbh>=7.5 & !is.na(data_m$dbh), ])
 }
 
 add_data_missing_map<-  function(data_c, data_m){
- data_missing_carto <- data_m[!data_m$tree_id %in% data_c$tree_id, ]
+ data_missing_carto <- data_m[!data_m$stem_id %in% data_c$stem_id, ]
  data_t <- data_c[1:nrow(data_missing_carto), ]
  data_t[ , ] <-  NA
- data_t$site_id <- data_missing_carto$site_id
- data_t$tree_id <- data_missing_carto$tree_id
+ data_t$plot_id <- data_missing_carto$plot_id
+ data_t$stem_id <- data_missing_carto$stem_id
  data_t$map_year <- data_missing_carto$year
  df <- rbind(data_c, data_t)
  return(df)
 }
 
 rm_data_missing_measure<-  function(data_c, data_m){
-return(data_c[data_c$tree_id %in% data_m$tree_id, ])
+return(data_c[data_c$stem_id %in% data_m$stem_id, ])
 }
 
 remove_site_m <- function(df_m){
@@ -173,7 +173,7 @@ sites_to_remove <- c('Bachat', 'Claret', 'Dent du Villard', 'La Cordeliere',
                      'Sixt-Molliet', 'Vaujany', 'Vercors1', 'Vercors3',
                      'Vercors4')
 
-return(df_m[!(df_m$site_id %in% sites_to_remove), ])
+return(df_m[!(df_m$plot_id %in% sites_to_remove), ])
 }
 
 remove_site_c <- function(df_c){
@@ -183,7 +183,7 @@ sites_to_remove <- c('Bachat', 'Claret', 'Dent du Villard', 'La Cordeliere',
                      'Sixt-Molliet', 'Vaujany', 'Vercors1', 'Vercors3',
                      'Vercors4')
 
-return(df_c[!(df_c$site_id %in% sites_to_remove), ])
+return(df_c[!(df_c$plot_id %in% sites_to_remove), ])
 }
 
 
@@ -219,19 +219,19 @@ fix_all_m <-  function(df_c, df_m){
 
 # TEST if all site in meta
 check_all_sites_in_c_m <- function(d_c, d_m, d_p){
- if(sum(!unique(d_c$site_id) %in% d_p$site_id)) stop('missing site of c in p')
- if(sum(!unique(d_m$site_id) %in% d_p$site_id)) stop('missing site of m in p')
+ if(sum(!unique(d_c$plot_id) %in% d_p$plot_id)) stop('missing site of c in p')
+ if(sum(!unique(d_m$plot_id) %in% d_p$plot_id)) stop('missing site of m in p')
 }
 
 
 ## CHECK WRONG XY COORDINATES
 plot_xy_map <-  function(site, data, d_p){
- df_t <- data[data$site_id == site, ]
+ df_t <- data[data$plot_id == site, ]
  if(sum(!is.na(df_t$x))>0 & sum(!is.na(df_t$y))>0){
-  min_x <-  d_p[d_p$site_id == site, 'x_min']
-  min_y <-  d_p[d_p$site_id == site, 'y_min']
-  max_x <-  d_p[d_p$site_id == site, 'x_max']
-  max_y <-  d_p[d_p$site_id == site, 'y_max']
+  min_x <-  d_p[d_p$plot_id == site, 'x_min']
+  min_y <-  d_p[d_p$plot_id == site, 'y_min']
+  max_x <-  d_p[d_p$plot_id == site, 'x_max']
+  max_y <-  d_p[d_p$plot_id == site, 'y_max']
  par(pty = 's')
   plot(as.numeric(df_t$x), as.numeric(df_t$y),
        main = site,
@@ -253,37 +253,37 @@ plot_xy_map <-  function(site, data, d_p){
 
 ## Delete tree outside mapping area
 
-get_wrong_xy_tree_id<-  function(site, data, d_p){
- df_t <- data[data$site_id == site, ]
+get_wrong_xy_stem_id<-  function(site, data, d_p){
+ df_t <- data[data$plot_id == site, ]
  if(sum(!is.na(df_t$x))>0 & sum(!is.na(df_t$y))>0){
-  min_x <-  d_p[d_p$site_id == site, 'x_min']
-  min_y <-  d_p[d_p$site_id == site, 'y_min']
-  max_x <-  d_p[d_p$site_id == site, 'x_max']
-  max_y <-  d_p[d_p$site_id == site, 'y_max']
+  min_x <-  d_p[d_p$plot_id == site, 'x_min']
+  min_y <-  d_p[d_p$plot_id == site, 'y_min']
+  max_x <-  d_p[d_p$plot_id == site, 'x_max']
+  max_y <-  d_p[d_p$plot_id == site, 'y_max']
   points_pb <-  (df_t$x > max_x | df_t$x < min_x |
                  df_t$y > max_y | df_t$y < min_y) &
                 !is.na(df_t$x) & !is.na(df_t$y)
-  tree_id_pb <- df_t$tree_id[points_pb]
+  stem_id_pb <- df_t$stem_id[points_pb]
   }else{
-  tree_id_pb <-  c()
+  stem_id_pb <-  c()
   }
- return(tree_id_pb)
+ return(stem_id_pb)
 }
 
 
 remove_wrong_xy_tree_m <- function(d_m, d_c, d_p){
- vec_wrong_xy_tree_id <- unlist(lapply(unique(d_c$site_id),
-                                       get_wrong_xy_tree_id,
+ vec_wrong_xy_stem_id <- unlist(lapply(unique(d_c$plot_id),
+                                       get_wrong_xy_stem_id,
                                        data = d_c, d_p = d_p))
- return(d_m[!d_m$tree_id %in% vec_wrong_xy_tree_id, ])
+ return(d_m[!d_m$stem_id %in% vec_wrong_xy_stem_id, ])
 }
 
 
 remove_wrong_xy_tree_c <- function(d_m, d_c, d_p){
- vec_wrong_xy_tree_id <- unlist(lapply(unique(d_c$site_id),
-                                       get_wrong_xy_tree_id,
+ vec_wrong_xy_stem_id <- unlist(lapply(unique(d_c$plot_id),
+                                       get_wrong_xy_stem_id,
                                        data = d_c, d_p = d_p))
- return(d_c[!d_c$tree_id %in% vec_wrong_xy_tree_id, ])
+ return(d_c[!d_c$stem_id %in% vec_wrong_xy_stem_id, ])
 }
 
 
@@ -299,11 +299,11 @@ read_all_data_and_clean <-  function(){
  data_m <- fix_all_m(data_c, data_m)
  check_all_sites_in_c_m(data_c, data_m, data_plot)
  pdf(file.path('figures',  'map_site_error.pdf'))
- lapply(unique(data_c$site_id), plot_xy_map, data = data_c, d_p = data_plot)
+ lapply(unique(data_c$plot_id), plot_xy_map, data = data_c, d_p = data_plot)
  dev.off()
  data_m <- remove_wrong_xy_tree_m(data_m, data_c, data_plot)
  data_c<- remove_wrong_xy_tree_c(data_m, data_c, data_plot)
- data_plot <- data_plot[data_plot$site_id %in% unique(data_c$site_id), ]
+ data_plot <- data_plot[data_plot$plot_id %in% unique(data_c$plot_id), ]
  print('done')
  saveRDS(list(c = data_c, m = data_m, p = data_plot), file.path('output', 'list_data.rds'))
 }
@@ -355,12 +355,12 @@ generate_metadata_p <- function(data, name_data = 'data_p') generate_metadata_an
 ## Check Table
 
 data_census <-  function(data_m){
-data_census <- table(data_m$site_id, data_m$year)
+data_census <- table(data_m$plot_id, data_m$year)
 write.csv(data_census, file.path('output', 'data_census.csv'))
 }
 
 data_sp <-  function(data_c){
-data_sp <- table(data_c$code_species, data_c$site_id)
+data_sp <- table(data_c$code_species, data_c$plot_id)
 write.csv(data_sp, file.path('output', 'data_sp_code.csv'))
 }
 
@@ -385,20 +385,20 @@ data_sp(data_c)
 ### Growth error
 
 growth_dead_tree <- function(i, data, yy, j){
- dbh1 <- data[data$tree_id== j &
+ dbh1 <- data[data$stem_id== j &
               data$year == yy[i], 'dbh']
- dbh2 <- data[data$tree_id== j &
+ dbh2 <- data[data$stem_id== j &
               data$year == yy[i+1], 'dbh']
- df <- data.frame(tree_id = j,
+ df <- data.frame(stem_id = j,
                   year1 = yy[i], year2 = yy[i+1],
                   dbh1 = dbh1, dbh2 = dbh2,
-                  code_diam1 = data[data$tree_id== j &
+                  code_diam1 = data[data$stem_id== j &
                                     data$year == yy[i], 'code_diam'],
-                  code_diam2 = data[data$tree_id== j &
+                  code_diam2 = data[data$stem_id== j &
                                     data$year == yy[i+1], 'code_diam'],
-                  code_status1 = data[data$tree_id== j &
+                  code_status1 = data[data$stem_id== j &
                                     data$year == yy[i], 'code_status'],
-                  code_status2 = data[data$tree_id== j &
+                  code_status2 = data[data$stem_id== j &
                                     data$year == yy[i+1], 'code_status']
                   )
  return(df)
@@ -406,7 +406,7 @@ growth_dead_tree <- function(i, data, yy, j){
 
 
 growth_tree_all <- function(j, df){
-years <- sort(df[df$tree_id== j, ]$year)
+years <- sort(df[df$stem_id== j, ]$year)
 list_t <- vector('list')
 list_t <- lapply(seq_len(length(years) -1), growth_dead_tree, df, years, j)
 res <- do.call(rbind, list_t)
@@ -416,7 +416,7 @@ return(res)
 save_data_growth <-  function(df){
 require(parallel)
 cl <- makeCluster(12, type="FORK")
-trees_ids<- unique(df$tree_id)
+trees_ids<- unique(df$stem_id)
 list_all <- parLapply(cl, trees_ids, growth_tree_all, df)
 stopCluster(cl)
 res <- do.call(rbind, list_all)
@@ -443,7 +443,7 @@ cook_outlier_detec <- function(df, x, y){
  a <- cbind(df, d1, r)
  a_out <- a[d1 > 6*mean(d1), ]
  points(a_out[[x]], a_out[[y]], pch = 4)
- return(a_out$tree_id)
+ return(a_out$stem_id)
 }
 
 
@@ -472,7 +472,7 @@ plot_quant_reg <- function(df, x, y,
          points(df[vec_pb, x], df[vec_pb, y], pch = 16, col = 'red')
          df[[paste0('tau',tau)]] <- vec_pb
          }
- return(df$tree_id[apply(df[, paste0('tau', probs_vec)], MARGIN = 1, sum)>0])
+ return(df$stem_id[apply(df[, paste0('tau', probs_vec)], MARGIN = 1, sum)>0])
 }
 
 plot_growth_error <-  function(df){
@@ -492,20 +492,20 @@ save_growth_error <-  function(df){
  quant_id <- plot_quant_reg(df, 'dbh1', 'G')
  cook_id <- cook_outlier_detec(df, 'dbh1', 'G')
  all_id <- c(as.character(quant_id), as.character(cook_id))
- write.csv(data.frame(tree_id = df[df$tree_id %in% all_id[duplicated(all_id)], ]),
+ write.csv(data.frame(stem_id = df[df$stem_id %in% all_id[duplicated(all_id)], ]),
            file = file.path('output', 'tree_wrong_growth.csv'),
            row.names = FALSE)
 }
 
 ## check if dead tree are alive again TODO
-save_tree_id_resurrected <- function(df){
+save_stem_id_resurrected <- function(df){
  d <- df[df$code_status1 %in% c('9990', '9991') &
                 df$code_status2 == '0000',]
  print(dim(d))
  write.csv(d, file.path('output', 'data_resurrected_tree.csv'))
 }
 
-## save_tree_id_resurrected(df_growth)
+## save_stem_id_resurrected(df_growth)
 ## no trees
 
 
@@ -513,15 +513,15 @@ save_tree_id_resurrected <- function(df){
 # check allometry TODO REMOVE base_crown_h
 
 ## test H tot and H crown
-save_tree_id_wrong_crown_h<- function(df_m){
+save_stem_id_wrong_crown_h<- function(df_m){
  vec_pb <- df_m$h_tot/apply(df_m[ , paste0('crown_h', 1:4)],
                              MARGIN = 1, mean, na.rm = TRUE)<1
- d <- df_m$tree_id[ vec_pb & !is.na(vec_pb)]
+ d <- df_m$stem_id[ vec_pb & !is.na(vec_pb)]
  print(dim(d))
  write.csv(d, file.path('output', 'data_wrong_crown_h_tree.csv'))
 
 }
-#save_tree_id_wrong_crown_h(data_m)
+#save_stem_id_wrong_crown_h(data_m)
 
 # plots
 plot_allo_error <- function(data){
@@ -551,7 +551,7 @@ plot_allo_error <- function(data){
 
 save_allo_error <-  function(data){
  plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3,
-      col = unclass(factor(data$site_id)))
+      col = unclass(factor(data$plot_id)))
  abline(h=50)
  quant_id_1<- plot_quant_reg(data, 'dbh', 'h_tot')
  cook_outlier_detec(data, 'dbh', 'h_tot')
@@ -564,13 +564,13 @@ save_allo_error <-  function(data){
  cook_outlier_detec(data, 'dbh', 'crown_r')
  vec_pb <- data$h_tot/apply(data[ , paste0('crown_h', 1:4)],
                              MARGIN = 1, mean, na.rm = TRUE)<1
- outlier_3 <- data$tree_id[vec_pb & !is.na(vec_pb)]
- write.csv(data.frame(tree_id = unique(c(quant_id_1, quant_id_2, outlier_3))),
+ outlier_3 <- data$stem_id[vec_pb & !is.na(vec_pb)]
+ write.csv(data.frame(stem_id = unique(c(quant_id_1, quant_id_2, outlier_3))),
            file = file.path('output', 'tree_wrong_allo.csv'),
            row.names = FALSE)
 
  vec_pb <- (data$h_tot>50 & !is.na(data$h_tot)) | (data$crown_r>7 & !is.na(data$crown_r))
- d <- data$tree_id[ vec_pb & !is.na(vec_pb)]
+ d <- data$stem_id[ vec_pb & !is.na(vec_pb)]
  print(dim(d))
  write.csv(d, file.path('output', 'data_wrong_allo2.csv'))
 }
@@ -585,7 +585,7 @@ map_plots <- function(df_p){
 
 ## Tables for data paper
 
-# TABLE 1 PLOT DESCRIPTION site_id (check diff with plot_id) area, elvation, lat, long,
+# TABLE 1 PLOT DESCRIPTION plot_id (check diff with plot_id) area, elvation, lat, long,
 
 table_plot <- function(df_p){
 require(maptools)
@@ -596,48 +596,51 @@ coordinates(df_p) <- c('x_lamb2_et', 'y_lamb2_et')
 proj4string(df_p) <- CRS("+init=epsg:27572")
 
 df_p2 <- spTransform(df_p,  CRS("+init=epsg:4326"))
+
+
 df_p$lat <-  df_p2$y_lamb2_et
 df_p$long <-  df_p2$x_lamb2_et
+df_p<- GetElev(df_p)
 list_res <- GetClimate(df_p)
 df_p$MAT <- list_res$MAT
 df_p$MAP <- list_res$MAP
 geol <- GetGeol(df_p)
 df_p$geol <-  geol
-table_p <- df_p[, c('site_id', 'area', 'elevation', 'lat',
+table_p <- df_p[, c('plot_id', 'area', 'elevation', 'lat',
                     'long', 'MAT', 'MAP', 'geol')]
 write.csv(table_p, file.path('output', 'table_plot.csv'))
 }
 
 
-# TABLE 2 site_id year_first_meas N census, main species, N initial G initial
+# TABLE 2 plot_id year_first_meas N census, main species, N initial G initial
 
 table_stand<- function(df_p, df_m, df_c, treshold_sp= 0.1){
 require(dplyr)
-table_p2 <- df_p[, c("site_id", "area")]
-df <- left_join(df_m, df_c[, c('tree_id', 'code_species')], by = 'tree_id')
-table_p3 <- df %>% group_by(site_id) %>%
+table_p2 <- df_p[, c("plot_id", "area")]
+df <- left_join(df_m, df_c[, c('stem_id', 'code_species')], by = 'stem_id')
+table_p3 <- df %>% group_by(plot_id) %>%
                 summarise(first_year = min(year),
                           n_census = n_distinct(year))
 df <- df %>% filter(code_status %in% c('0000', '8881', '8882')) %>%
-         arrange(year) %>% distinct(tree_id)
+         arrange(year) %>% distinct(stem_id)
 
 main_sp <- tapply(df$code_species,
-                  df$site_id,
+                  df$plot_id,
                   function(x) paste(names(table(x))[table(x)/
                                                     length(x)>treshold_sp],
                                     collapse = ' and '))
 n_init<- tapply(df$code_species,
-                df$site_id,
+                df$plot_id,
                 length)
 ba_init<- tapply(pi*df$dbh^2/4,
-                df$site_id,
+                df$plot_id,
                 sum)
-table_p4 <- data.frame(site_id = names(main_sp),
+table_p4 <- data.frame(plot_id = names(main_sp),
                        main_sp = main_sp,
                        n_init = n_init, ba_init = ba_init,
                        stringsAsFactors = FALSE)
-tab <- left_join(table_p2, table_p3, by = 'site_id')
-tab <- left_join(tab, table_p4, by = 'site_id')
+tab <- left_join(table_p2, table_p3, by = 'plot_id')
+tab <- left_join(tab, table_p4, by = 'plot_id')
 tab$ba_init <- tab$ba_init/(tab$area * 10000)
 write.csv(tab, file.path('output', 'table_plot2.csv'))
 }
@@ -655,19 +658,19 @@ df_m <- df_m %>% rowwise()  %>%
            crown_r = mean(c(crown_r1, crown_r2,
                             crown_r3, crown_r4),
                           na.rm = TRUE))
-tab1 <- df_m %>% group_by( site_id) %>%
+tab1 <- df_m %>% group_by( plot_id) %>%
     summarise(n_h = sum(!is.na(h_tot)),
               n_crown_h = sum(!is.na(crown_h)),
               n_crown_r = sum(!is.na(crown_r)))
 df <- df_m %>%
-         arrange(year) %>% distinct(tree_id)
-tab2 <- df %>% group_by(site_id) %>%
+         arrange(year) %>% distinct(stem_id)
+tab2 <- df %>% group_by(plot_id) %>%
     summarise(dead_init_tf = sum(code_status %in% c("9991", "9990"))>0)
 
-tab3 <- df_c%>% group_by(site_id) %>%
+tab3 <- df_c%>% group_by(plot_id) %>%
     summarise(xy_tf = sum(!is.na(x))>0)
 
-tab <- left_join(tab1, tab2,  by = 'site_id')
-tab <- left_join(tab, tab3,  by = 'site_id')
+tab <- left_join(tab1, tab2,  by = 'plot_id')
+tab <- left_join(tab, tab3,  by = 'plot_id')
 write.csv(tab, file.path('output', 'table_plot3.csv'))
 }

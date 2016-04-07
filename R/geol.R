@@ -14,6 +14,7 @@ read_brgm_dep <- function(d, path){
  return(test)
 }
 
+
 GetGeol <- function(df){
 
 require(maptools)
@@ -51,4 +52,11 @@ levels(test$LITHOLOGIE) <- c('boulder', 'limestone',  'limestone',  'limestone',
 return(test$LITHOLOGIE)
 }
 
+GetElev <- function(df){
+require(raster)
+mnt <- raster("/run/user/1001/gvfs/smb-share:server=syno,share=ign/BD_ALTI/500m/mnt_500m_rgf/w001001.adf")
+elev <- extract(mnt, df)
+df$elevation[is.na(df$elevation)] <- elev[is.na(df$elevation)]
+return(df)
+}
 
