@@ -22,6 +22,12 @@ The following can be installed directly in R
 - `ms` mardown file for metadata
 - `R` R functions used.
 
+## Build the data base
+
+- the function `read_measure_all` and `read_carto_all` and `read_data_sites` read all the .xls file from the network of irstea. The argument `path_samba` give the path to the folder `placette_foret` default is = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/". If different this need to be changed
+
+- to build the data in `R` run `library(remake)` and `make(data)`.
+
 
 ## TODO list
 
