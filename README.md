@@ -21,3 +21,9 @@ The following can be installed directly in R
 - `figs` figures of quality check
 - `ms` mardown file for metadata
 - `R` R functions used.
+
+
+## TODO list
+
+- explain structure and function
+- get new version of the doc from Marc

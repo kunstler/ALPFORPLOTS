@@ -152,17 +152,20 @@ return(data_m[data_m$dbh>=7.5 & !is.na(data_m$dbh), ])
 }
 
 add_data_missing_map<-  function(data_c, data_m){
+ data_c$missing <-  FALSE
  data_missing_carto <- data_m[!data_m$stem_id %in% data_c$stem_id, ]
  data_t <- data_c[1:nrow(data_missing_carto), ]
  data_t[ , ] <-  NA
  data_t$plot_id <- data_missing_carto$plot_id
  data_t$stem_id <- data_missing_carto$stem_id
  data_t$map_year <- data_missing_carto$year
+ data_t$missing <- TRUE
  df <- rbind(data_c, data_t)
  return(df)
 }
 
 rm_data_missing_measure<-  function(data_c, data_m){
+print(data_c[data_c$stem_id %in% data_m$stem_id, "stem_id"])
 return(data_c[data_c$stem_id %in% data_m$stem_id, ])
 }
 
@@ -642,6 +645,7 @@ table_p4 <- data.frame(plot_id = names(main_sp),
 tab <- left_join(table_p2, table_p3, by = 'plot_id')
 tab <- left_join(tab, table_p4, by = 'plot_id')
 tab$ba_init <- tab$ba_init/(tab$area * 10000)
+tab$n_init <- tab$n_init/(tab$area)
 write.csv(tab, file.path('output', 'table_plot2.csv'))
 }
 

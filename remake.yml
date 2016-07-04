@@ -45,6 +45,8 @@ targets:
       - output/table_plot2.csv
       - output/table_plot3.csv
       - output/data_wrong_allo2.csv
+      - output/data_sp_code.csv
+
   ms/metadata.md:
     knitr:
       chdir: true
@@ -138,3 +140,7 @@ targets:
 
   output/data_wrong_allo2.csv:
     command: save_allo_error(data_m)
+
+  output/data_sp_code.csv:
+    command: data_sp(data_c)
+
