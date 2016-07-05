@@ -8,11 +8,13 @@ library(gdata)
 read_data_plot <- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"){
  data_plot <- read.xls(file.path(path_samba, 'données_autrestables',
                                  'metadonnees_placette_2015.xlsx'),
+                       sheet = "placettes (2)_data_paper",
                        stringsAsFactors = FALSE)
- names(data_plot) <- c('plot_id', 'owner_id', 'year_first_mes', 'N_census',
+
+ names(data_plot) <- c('plot_id', 'owner_id', 'management', 'year_first_mes', 'N_census',
                        'area', "x_min", "x_max", "y_min", "y_max", 'aspect',
-                       'elevation', 'GPS_loc',
-                       'long', 'lat', 'x_lamb2_et', 'y_lamb2_et')
+                       'elevation', 'slope', 'GPS_loc',
+                       'long', 'lat', 'x_lamb2_et', 'y_lamb2_et', 'x_lamb93', 'y_lamb93')
  return(data_plot)
 }
 
@@ -154,6 +156,7 @@ return(data_m[data_m$dbh>=7.5 & !is.na(data_m$dbh), ])
 add_data_missing_map<-  function(data_c, data_m){
  data_c$missing <-  FALSE
  data_missing_carto <- data_m[!data_m$stem_id %in% data_c$stem_id, ]
+ write.csv(data_missing_carto, file.path("output", "data_missing_carto.csv"), row.names = FALSE)
  data_t <- data_c[1:nrow(data_missing_carto), ]
  data_t[ , ] <-  NA
  data_t$plot_id <- data_missing_carto$plot_id
@@ -192,7 +195,7 @@ return(df_c[!(df_c$plot_id %in% sites_to_remove), ])
 
 fix_all_c <-  function(df_c, df_m){
  df_c <- fix_species_code(df_c)
- df_c <- remove_tree_below_dbh_map(df_c, df_m)
+ ## df_c <- remove_tree_below_dbh_map(df_c, df_m)
  df_c <- add_data_missing_map(df_c, df_m)
  df_c <- rm_data_missing_measure(df_c, df_m)
  df_c <- remove_site_c(df_c)
@@ -209,7 +212,7 @@ return(df_c)
 
 fix_all_m <-  function(df_c, df_m){
  df_m <- fix_code_status(df_m)
- df_m <- remove_tree_below_dbh(df_m)
+ ## df_m <- remove_tree_below_dbh(df_m)
  df_m <- remove_site_m(df_m)
  df_m$year <-  as.numeric(df_m$year)
  df_m$dbh <-  as.numeric(df_m$dbh)
@@ -300,6 +303,7 @@ read_all_data_and_clean <-  function(){
  data_c <- rename_data_c(data_c)
  data_c <- fix_all_c(data_c, data_m)
  data_m <- fix_all_m(data_c, data_m)
+# error with new plot table of Marc
  check_all_sites_in_c_m(data_c, data_m, data_plot)
  pdf(file.path('figures',  'map_site_error.pdf'))
  lapply(unique(data_c$plot_id), plot_xy_map, data = data_c, d_p = data_plot)

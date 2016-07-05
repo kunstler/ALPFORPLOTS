@@ -41,7 +41,6 @@ brgm <- readOGR('GIS_data',
 ##
 proj4string(brgm) <- CRS("+init=epsg:2154")
 df_l93<- spTransform(df, CRS("+init=epsg:2154"))  # spTransform makes the projection
-
 test <- over(df_l93, brgm[, "LITHOLOGIE"])
 test$LITHOLOGIE <-  as.factor(as.character(test$LITHOLOGIE))
 levels(test$LITHOLOGIE) <- c('boulder', 'limestone',  'limestone',  'limestone',
