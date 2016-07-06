@@ -42,10 +42,12 @@ targets:
       - output/metadata_data_m.csv
       - output/metadata_data_p.csv
       - output/table_plot.csv
-      - output/table_plot2.csv
-      - output/table_plot3.csv
+      - output/table_stand_descrip.csv
+      - output/table_stand_allo.csv
       - output/data_wrong_allo2.csv
       - output/data_sp_code.csv
+      - output/data_sp_site.csv
+      - output/data_census.csv
 
   ms/metadata.md:
     knitr:
@@ -59,50 +61,30 @@ targets:
       - ms/refs.bib
       - R/ms.R
 
-
-  ms/metadata.html:
-    command: render_html("ms/metadata.md")
-    quiet: true
-    depends:
-      - ms/metadata.Rmd
-
-  ms/metadata.docx:
-    command: render_doc("ms/metadata.md")
-    quiet: true
-    depends:
-      - ms/metadata.Rmd
-
-  df_growth:
-    command: get_data_growth()
-    depends: output/df_growth.rds
-
-  output/df_growth.rds:
-    command: save_data_growth(data_m)
-
   output/list_data.rds:
     command: read_all_data_and_clean()
 
   data_c:
     command:  get_data_c()
-    depends: output/data_c.rds
+    depends: output/data_c.csv
 
-  output/data_c.rds:
+  output/data_c.csv:
     command:  save_data_c()
     depends: output/list_data.rds
 
   data_m:
     command:  get_data_m()
-    depends: output/data_m.rds
+    depends: output/data_m.csv
 
-  output/data_m.rds:
+  output/data_m.csv:
     command:  save_data_m()
     depends: output/list_data.rds
 
   data_p:
     command:  get_data_p()
-    depends: output/data_p.rds
+    depends: output/data_p.csv
 
-  output/data_p.rds:
+  output/data_p.csv:
     command:  save_data_p()
     depends: output/list_data.rds
 
@@ -112,8 +94,18 @@ targets:
   output/metadata_data_m.csv:
     command: generate_metadata_m(data_m)
 
+  output/data_sp_code.csv:
+    command: data_sp_code(data_c)
+
   output/metadata_data_p.csv:
     command: generate_metadata_p(data_p)
+
+  df_growth:
+    command: get_data_growth()
+    depends: output/df_growth.rds
+
+  output/df_growth.rds:
+    command: save_data_growth(data_m)
 
   output/tree_wrong_growth.csv:
     command: save_growth_error(df_growth)
@@ -129,18 +121,31 @@ targets:
     command: plot_growth_error(df_growth)
     plot: true
 
-  output/table_plot.csv:
-    command: table_plot(data_p)
+  output/table_stand_descrip.csv:
+    command: table_stand_descrip(data_p, data_m, data_c)
 
-  output/table_plot2.csv:
-    command: table_stand(data_p, data_m, data_c)
-
-  output/table_plot3.csv:
-    command: table_stand_b(data_p, data_m, data_c)
+  output/table_stand_allo.csv:
+    command: table_stand_allo(data_p, data_m, data_c)
 
   output/data_wrong_allo2.csv:
     command: save_allo_error(data_m)
 
-  output/data_sp_code.csv:
-    command: data_sp(data_c)
+  output/data_census.csv:
+    command: data_census(data_m)
+
+  output/data_sp_site.csv:
+    command: data_sp_site(data_c)
+
+  ms/metadata.html:
+    command: render_html("ms/metadata.md")
+    quiet: true
+    depends:
+      - ms/metadata.Rmd
+
+  ms/metadata.docx:
+    command: render_doc("ms/metadata.md")
+    quiet: true
+    depends:
+      - ms/metadata.Rmd
+
 

@@ -132,15 +132,20 @@ The following files are provided:
 
 ### B. Variable definitions for data.csv
 
+Metadata for 'data_c.csv'
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
 metadata_data_c <- read.csv(file.path('..', 'output', 'metadata_data_c.csv'))
 kable(metadata_data_c, "markdown", align="l", padding=10)
 ```
 
+Metadata for 'data_m.csv'
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
 metadata_data_m <- read.csv(file.path('..', 'output', 'metadata_data_m.csv'))
 kable(metadata_data_m, "markdown", align="l", padding=10)
 ```
+Metadata for 'data_p.csv'
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
 metadata_data_p <- read.csv(file.path('..', 'output', 'metadata_data_p.csv'))

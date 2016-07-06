@@ -33,7 +33,7 @@ GetClimate <-function(df) {
   row.names(LonLatLookup) <- NumMat
 
   #get the set of tiles corresponding to the lons/lats arguments
-  tiles <- extract(NumRast,cbind(df$long,df$lat))
+  tiles <- raster::extract(NumRast,cbind(df$long,df$lat))
   unique.tiles <- unique(tiles)
 
   plot.mat <- numeric(length(tiles))
@@ -46,12 +46,12 @@ GetClimate <-function(df) {
                          lon = LonLatLookup[i.tile,"Lon"],
                          lat = LonLatLookup[i.tile,"Lat"])
 
-    plot.mat[tiles==i.tile] <- extract(temp.tile,
+    plot.mat[tiles==i.tile] <- raster::extract(temp.tile,
                                        cbind(df$long[tiles==i.tile],
                                              df$lat[tiles==i.tile]),
                                        layer=1,nl=1)/10
                                   #retrieve MAT, divide by 10 for deg C
-    plot.map[tiles==i.tile] <- extract(temp.tile,
+    plot.map[tiles==i.tile] <- raster::extract(temp.tile,
                                        cbind(df$long[tiles==i.tile],
                                              df$lat[tiles==i.tile]),
                                        layer=12,nl=1) #retrieve MAP

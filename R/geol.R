@@ -40,22 +40,23 @@ brgm <- readOGR('GIS_data',
                 'brgm')
 ##
 proj4string(brgm) <- CRS("+init=epsg:2154")
-df_l93<- spTransform(df, CRS("+init=epsg:2154"))  # spTransform makes the projection
-test <- over(df_l93, brgm[, "LITHOLOGIE"])
+test <- over(df, brgm[, "LITHOLOGIE"])
 test$LITHOLOGIE <-  as.factor(as.character(test$LITHOLOGIE))
-levels(test$LITHOLOGIE) <- c('boulder', 'limestone',  'limestone',  'limestone',
-                             'limestone',  'limestone',  'limestone', 'conglomerate',
-                             'conglomerate', 'sandstone', 'marl', 'schist',
-                             'moraine', 'gneiss', 'schist')
+df_conv <- data.frame(
+     old= c("argile", "blocs", "calcaire", "calcaire argileux (80%<CO3<90%)",
+            "calcaire bioclastique", "calcaire spathique (ou cristallin)",
+            "calcaire sublithographique", "conglomérat", "conglomérat meuble à clastes jointifs",
+            "grauwacke", "grès", "marne (33%<CO3<66%)", "micaschiste", "moraine",
+            "orthogneiss", "schiste carboné"),
+     new= c('clay', 'boulder', 'limestone',  'limestone',  'limestone',
+            'limestone',  'limestone',  'conglomerate',
+            'conglomerate', 'greywacke', 'sandstone', 'marl', 'schist',
+            'moraine', 'gneiss', 'schist'))
+
+vec_level <- levels(test$LITHOLOGIE)
+levels(test$LITHOLOGIE)[match(df_conv$old,vec_level)] <- df_conv$new
 
 return(test$LITHOLOGIE)
 }
 
-GetElev <- function(df){
-require(raster)
-mnt <- raster("/run/user/1001/gvfs/smb-share:server=syno,share=ign/BD_ALTI/500m/mnt_500m_rgf/w001001.adf")
-elev <- extract(mnt, df)
-df$elevation[is.na(df$elevation)] <- elev[is.na(df$elevation)]
-return(df)
-}
 

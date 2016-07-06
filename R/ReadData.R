@@ -6,16 +6,16 @@ library(gdata)
 
 # read plots coordinates TODO UPDATE BY MARC DONE
 read_data_plot <- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"){
- data_plot <- read.xls(file.path(path_samba, 'données_autrestables',
+ data_p <- read.xls(file.path(path_samba, 'données_autrestables',
                                  'metadonnees_placette_2015.xlsx'),
-                       sheet = "placettes (2)_data_paper",
+                       sheet = "placettes",
                        stringsAsFactors = FALSE)
 
- names(data_plot) <- c('plot_id', 'owner_id', 'management', 'year_first_mes', 'N_census',
-                       'area', "x_min", "x_max", "y_min", "y_max", 'aspect',
-                       'elevation', 'slope', 'GPS_loc',
-                       'long', 'lat', 'x_lamb2_et', 'y_lamb2_et', 'x_lamb93', 'y_lamb93')
- return(data_plot)
+ names(data_p) <- c('plot_id', 'paper_yn', 'owner_id', 'management', 'year_first_mes', 'N_census',
+                       'area', "x_min", "x_max", "y_min", "y_max",
+                       'elevation', 'GPS_loc',
+                       'x_lamb93', 'y_lamb93')
+ return(data_p)
 }
 
 
@@ -91,6 +91,7 @@ names(df) <- c('map_year', 'map_id', 'plot_id', 'stem_id',
                    'quadrat_id', 'code_species',
                    'x', 'y', 'z', 'year_birth')
 df$stem_id <- df$map_id
+df$map_year<- NULL
 df$map_id <-  NULL
 return(df)
 }
@@ -109,17 +110,20 @@ return(df)
 
 
 ## FUNCTIONS TO CLEAN DATA
+trim <- function (x) gsub("^\\s+|\\s+$", "", x)
 
 fix_species_code <-  function(df){
  old_name <- c('SOR', '', 'CHE', 'SA spp', 'ALI', 'BOU', 'ALIB', 'SO',
                  'AL spp', 'QU spp', 'IF', 'MER', 'SAP', 'ERP',
-               'FRE', 'BETU', 'CHA', 'ORM')
- new_name <- c('SOAU', 'ND', 'QUSP', 'SASP', 'SOAR', 'BEPE', 'SOAR',
-               'SOSP', 'ALSP', 'QUSP', 'TABA', 'PRAV', 'ABAL',
-               'ACPL', 'FREX', 'BEPE', 'CABE', 'ULSP')
+               'FRE', 'BETU', 'CHA', 'ORM', 'SOAC')
+ new_name <- c('SOAU', 'ND', 'QUSP', 'SASP', 'SOAR', 'BESP', 'SOAR',
+               'SOAU', 'ALSP', 'QUSP', 'TABA', 'PRAV', 'ABAL',
+               'ACPL', 'FREX', 'BESP', 'CABE', 'ULSP', 'SOAU')
+ df$code_species <- trim(df$code_species)
  df$code_species <-  factor(df$code_species)
  names_species <- levels(df$code_species)
- names_species[match(old_name, names_species)] <- new_name
+ names_species[match(old_name[old_name %in% names_species],
+                     names_species)] <- new_name[old_name %in% names_species]
  levels(df$code_species) <-  names_species
  df$code_species <-  as.character(df$code_species)
  return(df)
@@ -153,41 +157,28 @@ remove_tree_below_dbh <-  function(data_m){
 return(data_m[data_m$dbh>=7.5 & !is.na(data_m$dbh), ])
 }
 
-add_data_missing_map<-  function(data_c, data_m){
- data_c$missing <-  FALSE
+check_data_missing_map<-  function(data_c, data_m){
  data_missing_carto <- data_m[!data_m$stem_id %in% data_c$stem_id, ]
- write.csv(data_missing_carto, file.path("output", "data_missing_carto.csv"), row.names = FALSE)
- data_t <- data_c[1:nrow(data_missing_carto), ]
- data_t[ , ] <-  NA
- data_t$plot_id <- data_missing_carto$plot_id
- data_t$stem_id <- data_missing_carto$stem_id
- data_t$map_year <- data_missing_carto$year
- data_t$missing <- TRUE
- df <- rbind(data_c, data_t)
- return(df)
+ if(nrow(data_missing_carto)>0){
+     write.csv(data_missing_carto, file.path("output", "data_missing_carto.csv"), row.names = FALSE)
+     stop("error trees with measurement but no recorder in carto check output/data_missing_carto.csv")
+  }
 }
 
 rm_data_missing_measure<-  function(data_c, data_m){
-print(data_c[data_c$stem_id %in% data_m$stem_id, "stem_id"])
+print(paste0('N removed tree with no measure ',
+             length(data_c[data_c$stem_id %in% data_m$stem_id, "stem_id"])))
 return(data_c[data_c$stem_id %in% data_m$stem_id, ])
 }
 
-remove_site_m <- function(df_m){
-sites_to_remove <- c('Bachat', 'Claret', 'Dent du Villard', 'La Cordeliere',
-                     'Lanslebourg', 'LesArcs', 'Meillarot', 'NantGranges4',
-                     'Pralognan', 'Riviere', 'Saisies1', 'Saisies2',
-                     'Sixt-Molliet', 'Vaujany', 'Vercors1', 'Vercors3',
-                     'Vercors4')
+remove_site_m <- function(df_m,df_p){
+sites_to_remove <- df_p$plot_id[df_p$paper_yn == 'no']
 
 return(df_m[!(df_m$plot_id %in% sites_to_remove), ])
 }
 
-remove_site_c <- function(df_c){
-sites_to_remove <- c('Bachat', 'Claret', 'Dent du Villard', 'La Cordeliere',
-                     'Lanslebourg', 'LesArcs', 'Meillarot', 'NantGranges4',
-                     'Pralognan', 'Riviere', 'Saisies1', 'Saisies2',
-                     'Sixt-Molliet', 'Vaujany', 'Vercors1', 'Vercors3',
-                     'Vercors4')
+remove_site_c <- function(df_c, df_p){
+sites_to_remove <- df_p$plot_id[df_p$paper_yn == 'no']
 
 return(df_c[!(df_c$plot_id %in% sites_to_remove), ])
 }
@@ -195,31 +186,51 @@ return(df_c[!(df_c$plot_id %in% sites_to_remove), ])
 
 fix_all_c <-  function(df_c, df_m){
  df_c <- fix_species_code(df_c)
- ## df_c <- remove_tree_below_dbh_map(df_c, df_m)
- df_c <- add_data_missing_map(df_c, df_m)
+ check_data_missing_map(df_c, df_m)
  df_c <- rm_data_missing_measure(df_c, df_m)
- df_c <- remove_site_c(df_c)
  df_c$x <-  as.numeric(df_c$x)
  df_c$y <-  as.numeric(df_c$y)
  df_c$x <-  as.numeric(df_c$x)
  df_c$z <-  as.numeric(df_c$z)
  df_c$year_birth <-  as.integer(df_c$year_birth)
- df_c$map_year<-  as.integer(df_c$map_year)
 
 return(df_c)
 }
 
 
+
 fix_all_m <-  function(df_c, df_m){
  df_m <- fix_code_status(df_m)
- ## df_m <- remove_tree_below_dbh(df_m)
- df_m <- remove_site_m(df_m)
  df_m$year <-  as.numeric(df_m$year)
  df_m$dbh <-  as.numeric(df_m$dbh)
  df_m$base_crown_m <-  NULL
  if(sum(duplicated(df_m$measure_id))>0)
      stop('duplicated measure_id')
  return(df_m)
+}
+
+add_var_p <- function(df_p){
+require(maptools)
+require(sp)
+require(rgdal)
+df_p <- df_p[!is.na(df_p$x_lamb93), ]
+coordinates(df_p) <- c('x_lamb93', 'y_lamb93')
+proj4string(df_p) <- CRS("+init=epsg:2154")
+df_p2 <- spTransform(df_p,  CRS("+init=epsg:4326"))
+df_p$lat <-  df_p2$y_lamb93
+df_p$long <-  df_p2$x_lamb93
+df_p<- GetTopo(df_p)
+list_res <- GetClimate(df_p)
+df_p$MAT <- list_res$MAT
+df_p$MAP <- list_res$MAP
+geol <- GetGeol(df_p)
+df_p$geol <-  geol
+df <-  as.data.frame(df_p)
+nn <- names(df)
+names(df)[nn == "x"] <- 'x_lamb93'
+names(df)[nn == "y"] <- 'y_lamb93'
+df <- df[, c(3:ncol(df), 1:2)]
+return(as.data.frame(df))
 }
 
 
@@ -296,47 +307,54 @@ remove_wrong_xy_tree_c <- function(d_m, d_c, d_p){
 
 read_all_data_and_clean <-  function(){
  #### TEST
- data_plot <- read_data_plot()
+ data_p <- read_data_plot()
  data_m <- read_mesures_all()
  data_c <- read_carto_all()
  data_m <- rename_data_m(data_m)
  data_c <- rename_data_c(data_c)
  data_c <- fix_all_c(data_c, data_m)
  data_m <- fix_all_m(data_c, data_m)
-# error with new plot table of Marc
- check_all_sites_in_c_m(data_c, data_m, data_plot)
+ df_c <- remove_tree_below_dbh_map(data_c, data_m)
+ df_m <- remove_tree_below_dbh(data_m)
+ data_c <- remove_site_c(data_c, data_p)
+ data_m <- remove_site_m(data_m, data_p)
+ data_p <- data_p[data_p$paper_yn == "yes", ]
+ check_all_sites_in_c_m(data_c, data_m, data_p)
  pdf(file.path('figures',  'map_site_error.pdf'))
- lapply(unique(data_c$plot_id), plot_xy_map, data = data_c, d_p = data_plot)
+ lapply(unique(data_c$plot_id), plot_xy_map, data = data_c, d_p = data_p)
  dev.off()
- data_m <- remove_wrong_xy_tree_m(data_m, data_c, data_plot)
- data_c<- remove_wrong_xy_tree_c(data_m, data_c, data_plot)
- data_plot <- data_plot[data_plot$plot_id %in% unique(data_c$plot_id), ]
+ data_m <- remove_wrong_xy_tree_m(data_m, data_c, data_p)
+ data_c<- remove_wrong_xy_tree_c(data_m, data_c, data_p)
+ data_p <- add_var_p(data_p)
  print('done')
- saveRDS(list(c = data_c, m = data_m, p = data_plot), file.path('output', 'list_data.rds'))
+ saveRDS(list(c = data_c, m = data_m, p = data_p), file.path('output', 'list_data.rds'))
 }
 
 
 ## list_data <- read_all_data_and_clean(path_samba, path_samba_r)
-
 save_data_c <-  function(){
     list_d <- readRDS(file.path('output', 'list_data.rds'))
-    saveRDS(list_d$c, file.path('output', 'data_c.rds'))
+    write.csv(list_d$c, file.path('output', 'data_c.csv'),
+              row.names = FALSE)
 }
 save_data_m <-  function(){
     list_d <- readRDS(file.path('output', 'list_data.rds'))
-    saveRDS(list_d$m, file.path('output', 'data_m.rds'))
+    write.csv(list_d$m, file.path('output', 'data_m.csv'),
+              row.names = FALSE)
 }
 save_data_p <-  function(){
     list_d <- readRDS(file.path('output', 'list_data.rds'))
-    saveRDS(list_d$p, file.path('output', 'data_p.rds'))
+    write.csv(list_d$p, file.path('output', 'data_p.csv'),
+              row.names = FALSE)
 }
 
 
-get_data_c <-  function() readRDS(file.path('output', 'data_c.rds'))
-get_data_m <-  function() readRDS(file.path('output', 'data_m.rds'))
-get_data_p <-  function() readRDS(file.path('output', 'data_p.rds'))
-
-
+get_data_c <-  function() read.csv(file.path('output', 'data_c.csv'),
+                                   stringsAsFactors = FALSE)
+get_data_m <-  function() read.csv(file.path('output', 'data_m.csv'),
+                                  stringsAsFactors = FALSE)
+get_data_p <-  function() read.csv(file.path('output', 'data_p.csv'),
+                                  stringsAsFactors = FALSE)
 
 ## GENERATE EMPTY METADATA
 generate_metadata_and_save<- function(data, name_data){
@@ -357,6 +375,21 @@ generate_metadata_c <- function(data, name_data = 'data_c') generate_metadata_an
 generate_metadata_m <- function(data, name_data = 'data_m') generate_metadata_and_save(data, name_data )
 generate_metadata_p <- function(data, name_data = 'data_p') generate_metadata_and_save(data, name_data )
 
+## TODO NEED TO FILL IN THE METADATA
+
+
+data_sp_code<-  function(data_c,
+          path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"){
+ data_code <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'Code_species.xlsx'),
+                       stringsAsFactors = FALSE)
+sp_vec <- unique(data_c$code_species)
+ if(sum(!sp_vec %in% data_code$Code_species)>0)stop("missing species in Code_species.xlsx")
+d <- data_code[data_code$Code_species %in% sp_vec, ]
+names(d) <- c("code_species", "latin_name")
+write.csv(d, file.path('output', 'data_sp_code.csv'))
+}
+
 
 
 ## Check Table
@@ -366,27 +399,16 @@ data_census <- table(data_m$plot_id, data_m$year)
 write.csv(data_census, file.path('output', 'data_census.csv'))
 }
 
-data_sp <-  function(data_c){
+data_sp_site<-  function(data_c){
 data_sp <- table(data_c$code_species, data_c$plot_id)
-write.csv(data_sp, file.path('output', 'data_sp_code.csv'))
+write.csv(data_sp, file.path('output', 'data_sp_site.csv'))
 }
 
-### apply function print check tables
-
-print_table_control <-  function(data_m, data_c){
-data_census(data_m)
-data_sp(data_c)
-}
 
 ## print_table_control(data_m, data_c) TODO ADD TO REMAKE
 
 
 ### QUALITY CHECK
-
-## DEAD TREES THAT ARE ALIVE AGAIN OK
-## BAD GROWTH MEASUREMENTS OK
-
-
 
 
 ### Growth error
@@ -585,7 +607,13 @@ save_allo_error <-  function(data){
 
 map_plots <- function(df_p){
  require(maps)
+ require(sp)
  map ('france', xlim = c(5, 7.2), ylim = c(44, 46.5))
+ coordinates(df_p) <- c('x_lamb93', 'y_lamb93')
+ proj4string(df_p) <- CRS("+init=epsg:2154")
+ df_p2 <- spTransform(df_p,  CRS("+init=epsg:4326"))
+ df_p$lat <-  df_p2$y_lamb2_et
+ df_p$long <-  df_p2$x_lamb2_et
  points(df_p$long, df_p$lat, col = 'red')
 }
 
@@ -595,25 +623,7 @@ map_plots <- function(df_p){
 # TABLE 1 PLOT DESCRIPTION plot_id (check diff with plot_id) area, elvation, lat, long,
 
 table_plot <- function(df_p){
-require(maptools)
-require(sp)
-require(rgdal)
-df_p <- df_p[!is.na(df_p$x_lamb2_et), ]
-coordinates(df_p) <- c('x_lamb2_et', 'y_lamb2_et')
-proj4string(df_p) <- CRS("+init=epsg:27572")
-
-df_p2 <- spTransform(df_p,  CRS("+init=epsg:4326"))
-
-
-df_p$lat <-  df_p2$y_lamb2_et
-df_p$long <-  df_p2$x_lamb2_et
-df_p<- GetElev(df_p)
-list_res <- GetClimate(df_p)
-df_p$MAT <- list_res$MAT
-df_p$MAP <- list_res$MAP
-geol <- GetGeol(df_p)
-df_p$geol <-  geol
-table_p <- df_p[, c('plot_id', 'area', 'elevation', 'lat',
+table_p <- df_p[, c('plot_id', 'area', 'elevation', 'slope', 'aspect', 'lat',
                     'long', 'MAT', 'MAP', 'geol')]
 write.csv(table_p, file.path('output', 'table_plot.csv'))
 }
@@ -621,7 +631,7 @@ write.csv(table_p, file.path('output', 'table_plot.csv'))
 
 # TABLE 2 plot_id year_first_meas N census, main species, N initial G initial
 
-table_stand<- function(df_p, df_m, df_c, treshold_sp= 0.1){
+table_stand_descrip<- function(df_p, df_m, df_c, treshold_sp= 0.1){
 require(dplyr)
 table_p2 <- df_p[, c("plot_id", "area")]
 df <- left_join(df_m, df_c[, c('stem_id', 'code_species')], by = 'stem_id')
@@ -650,14 +660,13 @@ tab <- left_join(table_p2, table_p3, by = 'plot_id')
 tab <- left_join(tab, table_p4, by = 'plot_id')
 tab$ba_init <- tab$ba_init/(tab$area * 10000)
 tab$n_init <- tab$n_init/(tab$area)
-write.csv(tab, file.path('output', 'table_plot2.csv'))
+write.csv(tab, file.path('output', 'table_stand_descrip.csv'))
 }
 
 # TABLE 3 diam min , n of height measure , n of crown radius measure, n of crown height measure, dead and stump atestablish Y/N , loc xy or quadrat
 
-# Table 4 spwecies code and species latin name
 
-table_stand_b<- function(df_p, df_m, df_c){
+table_stand_allo<- function(df_p, df_m, df_c){
 require(dplyr)
 df_m <- df_m %>% rowwise()  %>%
     mutate(crown_h = mean(c(crown_h1, crown_h2,
@@ -680,5 +689,7 @@ tab3 <- df_c%>% group_by(plot_id) %>%
 
 tab <- left_join(tab1, tab2,  by = 'plot_id')
 tab <- left_join(tab, tab3,  by = 'plot_id')
-write.csv(tab, file.path('output', 'table_plot3.csv'))
+write.csv(tab, file.path('output', 'table_stand_allo.csv'))
 }
+
+# Table 4 spwecies code and species latin name
