@@ -290,6 +290,6 @@ pandoc.table(data_summary,
 **TODO**
 
 ## REFERENCES
-```{r results='asis', echo=FALSE, warning=FALSE}
-bibliography("html")
+```{r results='asis', warning=FALSE}
+bibliography()
 ```
