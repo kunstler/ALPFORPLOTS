@@ -4,14 +4,29 @@
 
 ```{r, results="hide", echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(tidy=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap="")
-options(citation_format = "text", max.names=2)
+options(citation_format = "text", max.names=2, digits=2)
 require(bibtex)
+require(gdata)
+require(pander)
+path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"
+metadata_p <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'metadonnees_plot.xlsx'),
+                       stringsAsFactors = FALSE)
+metadata_c <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'metadonnees_carto.xlsx'),
+                       stringsAsFactors = FALSE)
+metadata_m <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'metadonnees_mesures.xlsx'),
+                       stringsAsFactors = FALSE)
 bib <- read.bibtex("refs.bib")
 source(file.path('..', 'R', 'ReadData.R'))
-data_c <- readRDS('../output/data_c.rds')
-data_m <- readRDS('../output/data_m.rds')
-data_p <- readRDS('../output/data_p.rds')
+data_c <- read.csv('../output/data_c.csv')
+data_m <- read.csv('../output/data_m.csv')
+data_p <- read.csv('../output/data_p.csv')
+data_p <- data_p[data_p$paper_yn == "yes", ]
 df_growth <- readRDS('../output/df_growth.rds')
+table_stand <- read.csv(file.path('..', 'output', 'table_stand_descrip.csv'))
+table_allo <- read.csv(file.path('..', 'output', 'table_stand_allo.csv'))
 ```
 
 ```{r precite, results='hide', message=FALSE, echo=FALSE}
@@ -22,16 +37,19 @@ df_growth <- readRDS('../output/df_growth.rds')
 
 ## INTRODUCTION
 
-TODO `r citep(list(bib["zianis_biomass_2005"]))`.
+Worldwide research works have emphasized the ecological, economical and socio-cultural services provided by forest ecosystems, and the biodiversity they support. They also pointed out that forest ecosystems nowadays face drastic changes, both from climatic and anthropogenic origins, and that these changes may impact ecosystem services at different time and spatial scales `r citep(list(bib["Elkin-2013"]))`. Understanding how forest will adapt to these changes and how forest management can help to mitigate these impacts is crucial and requires long-term monitoring of forest dynamics.
+The data set we present consists in a network of 64 forest permanent plots in the French northern Alps (Fig. 1). In this region, forests cover 41 $\%$ of the area and climate exhibits high regional variations both along a continentality and an elevation gradient, with mediterranean influences in the south. In the network, tree species composition change with elevation, from European beech (*Fagus sylvatica*) dominated stands at the lower montane (800 m a.s.l) belt to Norway spruce (*Picea abies*) dominated stands at the subalpine belt (1 700 m a.s.l), through mixed stands of European beech, Silver fir (*Abies alba*) and Norway spruce at intermediate elevations.
+Archives analysis, using maps from the beginning of the 19th century and aerial photographs of the middle of the 20th century, have attested that French Alps forests are dominated by ancient forests that have been continuously forested for more than 200 years `r citep(list(bib["Janssen-2016"]))`. Dominant management system in these forests is uneven-aged management and consists in single-tree or small-group selection cutting. Morover, harvesting rate has been very low for the last 150 years, because the protection function of the forest was the major objective and because of the decrease in wood price. In comparison with other European forests, forests in this area are thus generally richer in large and old trees and in deadwood and stand structure is rather heterogeneous `r citep(list(bib["Paillet-2015"]))`. Consequently, they are considered as biodiversity hotspots (Paillet et al. 2013 N EST PAS VRAIMENT UN PROCEEDINGS COMMENT LE CITER ET IL N Y A PAS AUTRE CHOSE QUE CELA ???) of high protection, conservation, and economical values. In contrast, recent forests that have established in former agricultural lands or that originate from man-made rehabilitation of degraded lands at the end of the 19^th century  now consist in stands 120–180 years old that are still dominated by the first cohort of trees and show a quite regular structure and ahigh basal area that may locally reach more than 60 m^2 .ha-1. These two contrasted structural types dominates the network.
+
+Plots were established from 1994 to 2004 and censured 2 to 5 times during the 1994-2015 period. Plots were initially established to sample a wide range of forest structure and successional stages to evaluate the forest dynamics across succession. They were then used to calibrate a forest dynamic model Samsara2 `r citep(list(bib["Courbaud-2015"]))` and to test various silviculture practices. They are now also used to evaluate various ecosystem services (habitat quality, protection against natural hazard efficiency,…). The network now represents an invaluable tool to evaluate the response of mountain forest ecosystems to the combined effect of climate and management changes.
 
 
-```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width=9, fig.height=7}
-# TO IMPROVE
-map_plots(data_p)
+```{r echo=FALSE, warning=FALSE,  message=FALSE,, fig.width=9, fig.height=7}
+#to improve
+mapplots(data_p)
 ```
 **Figure 1** Plots distribution in France.
 
- [github](https://github.com/dfalster/baad/).
 
 
 ## METHODS
@@ -43,53 +61,149 @@ Long-term stem inventory data from mountain forest plots in France.
 
 ### B. DATA SET IDENTIFICATION CODE:
 
-### C. DATA SET DESCRIPTORS:
-**1. Originators**: The study was initiated by TODO.
+ALPFORPLOTS
 
-**2. Abstract**: We present repeated stem measurement data from `r length(unique(data_p$site_id))` plots in mountain forests in France.
+### C. DATA SET DESCRIPTORS:
+**1. Originators**:
+
+Marc Fuhr, Forest Ecology, Mountain Ecosystems Research Unit, IRSTEA, Grenoble,
+<France.Marc.fuhr@irstea.fr>
+
+Benoît Courbaud, Forest Ecology, Mountain Ecosystems Research Unit, IRSTEA, Grenoble, France. 
+<Benoit.courbaud@irstea.fr>
+
+Thomas Cordonnier, Forest Ecology, Mountain Ecosystems Research Unit, IRSTEA, Grenoble, France. 
+<Thomas.cordonnier@irstea.fr>
+
+Georges Kunstler, Forest Ecology, Mountain Ecosystems Research Unit, IRSTEA, Grenoble, France. 
+<Georges.kunstler@irstea.fr>
+
+Catherine Riond, Forest Management, National Forest Office, Chambéry, France
+<Catherine.riond@onf.fr>
+
+Eric Mermin, Mountain Ecosystems Research Unit, IRSTEA, Grenoble, France. 
+<Eric.mermin@irstea.fr>
+
+Pascal Tardif, Mountain Ecosystems Research Unit, IRSTEA, Grenoble, France. 
+<Pascal.tardif@irstea.fr>
+
+**2. Abstract**:
+
+We present repeated tree measurement data from `r length(unique(data_p$site_id))` permanent plots in mountain forests in France. Plot elevation ranges from `r min(data_p$elevation, na.rm = TRUE)` (lower limit of the montane belt) to `r max(data_p$elevation, na.rm = TRUE)` m a.s.l (subalpine belt). Forest types mainly consists of pure or mixed stands dominated by European beech (*Fagus sylvatica*), Silver fir (*Abies alba*) and Norway spruce (*Picea abies*), in association with various broadleaved species at low elevation and with Arolla pine (*Pinus cembra*) at high elevation. The plot network includes `r nrow(data_p[data_p$management == "UNM", ])` plots that have not been managed for the last 40 years (at least) and `r nrow(data_p[data_p$management == "UNM", ])` plots managed according to an uneven-aged system in single-tree or small-group selection cutting. Plot sizes range from to `r min(data_p$area, na.rm = TRUE)` ha to `r max(data_p$area, na.rm = TRUE)` ha. Plots were installed from 1994 to 2004 and censured 2 to 5 times during the 1994-2015 period. During the first census (installation), living trees more than 7.5 cm in dbh  were identified, their diameter at breast height (dbh) was measured and their social status (strata) noted. Trees were spatially located, either with x, y and z coordinates (41 plots) or within subplots 0.25 ha square (23 plots). In addition, in some plots, tree heights and tree crown dimensions were measured on a subset of trees and dead standing trees and stumps were included in the census. During the following census, living tree diameters were measured (including recruited trees) and tree status (living, damaged, dead, stump) were recorded. In addition, tree heights were measured on a subset of trees. At the establishment of the plots, plot densities ranges from `r min(table_stand$n_init, na.rm = TRUE)` to `r max(table_stand$n_init, na.rm = TRUE)` stems.ha-1 and plot basal areas ranges from `r min(table_stand$ba_init, na.rm = TRUE)` to `r max(table_stand$ba_init, na.rm = TRUE)` m^2 .ha^-1 . 
+
 
 ### D. Key words
 
-France; mortality; permanent plot; mountain forest; recruitment; stem growth; stem height; canopy radius and height; forest management
+France; permanent plot; mountain forest; tree recruitment; tree growth; tree mortality; tree diameter; tree height; tree canopy radius; tree canopy height; forest management; tree spatial coordinates.
 
 
 ## METADATA CLASS II. RESEARCH ORIGIN DESCRIPTORS
 
 ### A. "OVERALL" PROJECT DESCRIPTION
 
-**1. Identity**: 
+**1. Identity**: Long-term stem inventory data from mountain forest plots in France.
 
-**2. Originators**: 
+**2. Originators**:
+
+The study was first initiated by IRSTEA in collaboration with the French National Forest Office (public institute in charge of the management of public forests in France).
 
 **3. Period of study**: From `r min(data_p$year_first_mes, na.rm = TRUE)` to 2015.
 
 **4. Objectives**:
+**THIS SECTION IS STRANGE! IS IT INTERESSTING FOR THE READER??**
+The objectives are to monitor and analyse mountain forest structure and dynamics for a broad range of stand types and management practices in the mountain forests of the French northern Alps.
 
-**5. Abstract**:
+Initial this was motivated by a change in management regime in the French Alps. Forest management has become very cautious in the French Alps during the 20th century: first, in order to maintain a constant canopy cover that warranty protection against natural hazards `r citep(list(bib["Cordonnier-2008"]))`, second because logging operations have become less and less profitable in remote or steep sloped areas. Consequently, mature forest stands dominated by large and very large ageing trees have developed and nowadays cover large areas.
+
+Forest managers have gradually worried on the stability of these stands from the 80’s, fearing that a brutal senescent phase – both in space and time – may occasion large gaps and then be detrimental to the protective function of the forest `r citep(list(bib["Leclerc-1998"]))`. Consequently, IRSTEA started in the 90’s a research program that aimed at assessing forest stability (resistance and resilience) and developing silvicultural guidelines that maintain or enhance stability.
+
+The initial objective of this program was to monitor forest dynamics along succession and to evaluate the risk of brutal senescent collapse (Renaud et al., 1994 **TODO**). Plots were thus established in the main successional stages to confirm, by a synchronic approach, hypothesis on forest dynamics issued from a previous diachronic approach. A first set of plots was established from 1994 to 1997 by IRSTEA and then completed by ONF at the beginning of the 2000's to extend ecological contexts and silvicultural practices.
+In the same time, IRSTEA developed an individual-based and spatially explicit forest dynamics simulation model, called Samsara, and established additional plots to calibrate and validate the successive versions of the model. 
+Moreover, specific plots called “marteloscopes” were established by ONF for training purpose (for harvesting simulations by forest managers or researchers).
+
+
+**SOME EXAMPLES OF APPLICATIONS** MARC IL n Y A PAS DE SECTION APPLICATION DANS LES GUIDELINES DE ECOLOGY??? UTILE?
+
+Our dataset has been recently used:
+To calibrate and validate an individual-based and spatially explicit forest dynamics simulation model, called Samsara2, and currently calibrated for Silver fir and Norway spruce `r citep(list(bib[c("Vieilledent-2010a", "Vieilledent-2010b", "Courbaud-2015")]))`.
+To assess the protection efficiency of the forest against rockfall along a maturity gradient: we constituted homogeneous groups of plots regarding maturity structural attributes and used a rockfall simulation model  that simulates impacts against trees and takes into account the species, the diameter and the location (x,y) of the trees `r citep(list(bib["Fuhr-2015"]))`.
+To evaluate the dynamics of mature forest stands, focusing on the spatial and temporal patterns of tree mortality (unpublished data)
+To calibrate and validate predictive models of forest stand attributes (height distributions, diameter distributions, basal area, volume, individuals trees location) developed using airborne LiDAR data `r citep(list(bib["Eysn-2015"]))`.
+To build habitat quality indicators using the dendrometric structure of the plots, combined with data on deadwood `r citep(list(bib["Redon-2014"]))`.
+To test heterogeneity and abundance indices in heterogeneous mountain forest stands in order to link these indices to silvicultural practices and stand history `r citep(list(bib["Cordonnier-2012"]))`.
+
 
 **6. Sources of funding**:
-	
+Plot installation and early monitoring was mainly supported by IRSTEA and ONF internal fundings. Complementary funds from the French Ministry of Environment, the French Ministry of Agriculture and the Vanoise National Park have recently helped for recent census and database building.	
 
 ### B. SPECIFIC SUBPROJECT DESCRIPTION
 
 #### II.B.1. Census of stems ≥7.5 cm DBH
 
-**1. Sites description**: TODO site type, geography, Habitat, Geology Landform, Site history, Climate
+**1. Sites description**:
 
-**2. Experimental or sampling design**: TODO 
+Plots are located in the northern French Alps from to Nand to E. Plot location (tab. 1) is either based on measurement with a differential GPS or an estimation of the position on a 1/25000 map.
+Ecological conditions are very heterogeneous (tab. 1). Climate is under oceanic (high precipitations all year long), continental (low precipitations, high seasonality of the temperature) and mediterranean (high temperatures and low precipitations) influences and can be divided into 5 climatic sectors: external northern sector with an oceanic climate, external southern sector with an oceanic-mediterranean climate, intermediate northern sector with an oceanic-continental climate, internal sector with a continental climate and intermediate southern sector mixing the influences of the three climates. Geology is also highly variable including calcareous and crystalline rocks, schists, alluvium, moraines… (see Table 1 for details per plot). Topography is very variable, plot elevation range  from `r min(data_p$elevation, na.rm = TRUE)` (lower limit of the montane belt) to `r max(data_p$elevation, na.rm = TRUE)` m a.s.l (subalpine belt). Plot slope is derived from a 1/25000 MNT and ranges from `r min(data_p$slope, na.rm = TRUE)` to  `r max(data_p$slope, na.rm = TRUE)` degree.
 
-**3. Research methods**: TODO Field, Taxonomy, Permit history, Legal
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
+tb_p <- read.csv(file.path('..', 'output', 'table_plot.csv'))
+pandoc.table(tb_p,
+             digits = 3, split.tables = 200, split.cells = 35)
+```
+Table 1 : Plots sites description
+
+**2. Experimental or sampling design**:
+
+Forest types in the network (tab. 2) mainly consist of pure or mixed stands dominated by European beech (*Fagus sylvatica*), Silver fir (*Abies alba*) and Norway spruce (*Picea abies*), in association with various broadleaved species at low elevation and with Arolla pine (*Pinus cembra*) at high elevation. The plot network includes 23 plots that have not been managed for at least 40 years  and 41 managed plots where the dominant management system is uneven-aged management and consists in single-tree or small-group selection cutting (tab. 2). Harvesting operations are monitored by recording harvested trees.
+Plots were installed from 1994 to 2004 and censured 2 to 5 times during the 1994-2015 period. Plot sizes range from to 0.25 ha to 1.875 ha .At the establishment of the plots, plot densities ranges from 181 to 1328 stems.ha-1 and plot basal areas ranges from `r min(table_stand$ba_init, na.rm = TRUE)` to `r max(table_stand$ba_init, na.rm = TRUE)` m2.ha-1 (tab. 2).
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
+library(pander)
+table_stand <- read.csv(file.path('..', 'output', 'table_stand_descrip.csv'))
+pandoc.table(table_stand,
+             digits = 3, split.tables = 200, split.cells = 35)
+```
+
+Table 2: plot characteristics
+
+**3. Research methods**:
+
+Tree diameters were measured using the following rules:
+1. Tree diameters were measured at breast height (1.3 m), from the ground on the uphill side of the stem. Trees leaning more than $45\°$ were noted (`code_status` = 8881) and measured 1.3 along the underside of the tree.
+2. Tree diameters were measured to the nearest millimeters with a diameter tape (`code_diam` = 1). In some plots, however, diameters were measured with a caliper to the 5 nearest millimeters (`code_diam` = 2). 
+3. Trees that forked above 1.3 m were measured below the fork whereas trees that forked below 1.3 m were measured as separate trees.
+4. During the first census, in case of existing deformities precluding normal dbh measurement, tree diameters were measured above or below the deformity. In case of deformities occurring between two successive census, the `code_status` of the tree was modified (`code_status` = 8883) and the dbh was not measured. 
+5. Height of diameter measurement were marked on the trees (painting mark). Trees were individually identified in the field with  alphanumeric identifiers (`tree_id`).
+6. New trees were recruited at each census. When a tree died between two census, the `code_status` of the tree was modified (`code_status` = 9990) and the dbh was not measured. In the same way, when a tree was logged between two census, the `code_status` of the tree was modified (`code_status` = 9991) and the dbh was not measured. Howewer, in 38 plots, the dbh of the dead standing trees (`code_status` = 9990) and the diameter of the stumps (`code_status` = 9991) were measured during the first census (tab. 3).
+7. When a tree was not found or when field workers forgot to measure a tree, the `code_status` of the tree was modified (`code_status` = 8880) and the dbh was not measured. 
+In 41 plots, stem position was located with x, y coordinates (in the projected plan). In 23 plots only the stem position was located within subplots of 0.25 ha square called quadrats (tab. 3). 
+
+In 41 plots, stem position was located with x, y coordinates (in the projected plan). In 23 plots only the stem position was located within subplots of 0.25 ha square called quadrats (tab. 3). 
+Stem height was measured in `r nrow(table_allo[table_allo$n_h>0, ])` plots on a subset of trees, mostly during the first census (tab. 3). It was defined as the length of the stem from ground to upmost growing tip either using the triangulation method (base distance and slope angle) with a clinometer and a measuring tape or using a Vertex IV ultrasonic hypsometer (Haglof).
+Crown dimensions were measured in `r nrow(table_allo[table_allo$n_crown_ht>0, ])` plots on a subset of trees, during the first census (tab. 3). They were measured in four perpendicular directions (1 to 4)or two opposite directions (1 and 3). The first direction was on the uphill side of the stem, the third direction was opposite (downhill) and the second/fourth directions were respectively left/right of the first dimension. For each direction, crown height (height of the lowest branch) was measured either using triangulation method or Vertex IV. Crown radius (projected plan distance between the trunk and the outermost tip of the largest branch)was measured using a measuring tape.
+Stem strata was eye-determined as follows: stand dominant height (H0) was divided in four intervals defining four strata, from the highest strata (strata 1: 3/4 H0 to H0) to the lowest strata (strata 4: 0 to 1/2 H0).
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
+library(pander)
+table_allo <- read.csv(file.path('..', 'output', 'table_stand_allo.csv'))
+pandoc.table(table_allo,
+             caption = "Census characteristics.",
+             digits = 3, split.tables = 200, split.cells = 35)
+```
 
 
 ## CLASS III. DATA SET STATUS AND ACCESSIBILITY
 
 ### A. Status
 
-**Latest update**: The dataset made available through this publication was processed on TODO. Newer updates may be retrieved from the following website TODO [github.com/kunstler](https://github.com/kunstler).
+**Latest update**: The dataset made available through this publication was processed on **DATE TODO**. R code use to check the data can be retrieved from the following website [github.com/kunstler/AlpineForestData](https://github.com/kunstler/AlpineForestData).
 
 **Metadata status**: Metadata are complete to last update and are stored with data.
 
-**Data verification**: TODO
+**Data verification**:
+
+Stem dbh measurement were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry (stem height,crown radius and height) measurements and checked the corresponding data for field or entry errors. Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code atgithub.com/kunstler) at quantile 0.5% and 99.5% with a third degree smoothing function of the explicative variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed the Cook distance from a linear regression and identified outliers as points with a Cook distance above six times the mean Cook distance. The figures below present the points identified as outliers according each method that remains after data verification.
+
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width=9, fig.height=7}
 # TO IMPROVE
@@ -110,9 +224,13 @@ plot_allo_error(data_m)
 
 If you notice any problems with the dataset, please list an issue at [github.com/kunstler](https://github.com/kunstler).
 
-**Contact persons**: TODO.
+**Contact persons**:
 
-**Copyright restrictions**: The dataset is released under the the [Creative Commons Zero](https://creativecommons.org/publicdomain/zero/1.0/) ??.
+Marc Fuhr, Forest Ecology, Mountain Ecosystems Research Unit, IRSTEA, Grenoble,
+<France.Marc.fuhr@irstea.fr>
+
+
+**Copyright restrictions**: The dataset is released under the the [Creative Commons Zero](https://creativecommons.org/publicdomain/zero/1.0/) **TO CHECK**.
 
 **Costs**: None.
 
@@ -132,24 +250,29 @@ The following files are provided:
 
 ### B. Variable definitions for data.csv
 
+**TODO ADD DEFINITION OF CODE FROM MARC FILES**
+
 Metadata for 'data_c.csv'
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
-metadata_data_c <- read.csv(file.path('..', 'output', 'metadata_data_c.csv'))
-kable(metadata_data_c, "markdown", align="l", padding=10)
+pandoc.table(metadata_c,
+             digits = 3, split.tables = 200, split.cells = 35)
 ```
+
 
 Metadata for 'data_m.csv'
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
-metadata_data_m <- read.csv(file.path('..', 'output', 'metadata_data_m.csv'))
-kable(metadata_data_m, "markdown", align="l", padding=10)
+pandoc.table(metadata_m,
+             digits = 3, split.tables = 200, split.cells = 35)
 ```
+
+
 Metadata for 'data_p.csv'
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
-metadata_data_p <- read.csv(file.path('..', 'output', 'metadata_data_p.csv'))
-kable(metadata_data_p, "markdown", align="l", padding=10)
+pandoc.table(metadata_p,
+             digits = 3, split.tables = 200, split.cells = 35)
 ```
 
 **Number of observations by files**
@@ -158,12 +281,15 @@ kable(metadata_data_p, "markdown", align="l", padding=10)
 options(digits=9)
 data_summary <- data.frame(file = c('data_c', 'data_m', 'data_p'),
                            Nobs = c(nrow(data_c), nrow(data_m), nrow(data_p))) 
-kable(data_summary, "markdown", align="l", padding=10)
+pandoc.table(data_summary,
+             digits = 3, split.tables = 200, split.cells = 35)
 ```
 
 ## ACKNOWLEDGMENTS
 
-**Compilers:** TODO.
+**TODO**
 
 ## REFERENCES
-
+```{r results='asis', echo=FALSE, warning=FALSE}
+bibliography("html")
+```

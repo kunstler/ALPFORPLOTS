@@ -364,10 +364,10 @@ generate_metadata_and_save<- function(data, name_data){
  write.csv(metadata, file.path('output',
                      paste0('metadata_',
                             name_data,
-                            '.csv')))
+                            '.csv')), , row.names = FALSE)
  write.csv(data, file.path('output',
                      paste0(name_data,
-                            '.csv')))
+                            '.csv')), , row.names = FALSE)
 }
 
 
@@ -387,7 +387,7 @@ sp_vec <- unique(data_c$code_species)
  if(sum(!sp_vec %in% data_code$Code_species)>0)stop("missing species in Code_species.xlsx")
 d <- data_code[data_code$Code_species %in% sp_vec, ]
 names(d) <- c("code_species", "latin_name")
-write.csv(d, file.path('output', 'data_sp_code.csv'))
+write.csv(d, file.path('output', 'data_sp_code.csv'), row.names = FALSE)
 }
 
 
@@ -396,12 +396,12 @@ write.csv(d, file.path('output', 'data_sp_code.csv'))
 
 data_census <-  function(data_m){
 data_census <- table(data_m$plot_id, data_m$year)
-write.csv(data_census, file.path('output', 'data_census.csv'))
+write.csv(data_census, file.path('output', 'data_census.csv'), row.names = FALSE)
 }
 
 data_sp_site<-  function(data_c){
 data_sp <- table(data_c$code_species, data_c$plot_id)
-write.csv(data_sp, file.path('output', 'data_sp_site.csv'))
+write.csv(data_sp, file.path('output', 'data_sp_site.csv'), row.names = FALSE)
 }
 
 
@@ -451,11 +451,11 @@ stopCluster(cl)
 res <- do.call(rbind, list_all)
 res$G <- (res$dbh2-res$dbh1)/(res$year2-res$year1)
 res$same_code_diam <-  res$code_diam1 == res$code_diam2
-saveRDS(res, file.path('output', 'df_growth.rds'))
+write.csv(res, file.path('output', 'df_growth.csv'), row.names = FALSE)
 }
 
 get_data_growth <-  function(){
-readRDS(file.path('output', 'df_growth.rds'))
+read.csv(file.path('output', 'df_growth.csv'))
 }
 
 
@@ -531,7 +531,7 @@ save_stem_id_resurrected <- function(df){
  d <- df[df$code_status1 %in% c('9990', '9991') &
                 df$code_status2 == '0000',]
  print(dim(d))
- write.csv(d, file.path('output', 'data_resurrected_tree.csv'))
+ write.csv(d, file.path('output', 'data_resurrected_tree.csv'), row.names = FALSE)
 }
 
 ## save_stem_id_resurrected(df_growth)
@@ -547,7 +547,7 @@ save_stem_id_wrong_crown_h<- function(df_m){
                              MARGIN = 1, mean, na.rm = TRUE)<1
  d <- df_m$stem_id[ vec_pb & !is.na(vec_pb)]
  print(dim(d))
- write.csv(d, file.path('output', 'data_wrong_crown_h_tree.csv'))
+ write.csv(d, file.path('output', 'data_wrong_crown_h_tree.csv'), row.names = FALSE)
 
 }
 #save_stem_id_wrong_crown_h(data_m)
@@ -601,20 +601,7 @@ save_allo_error <-  function(data){
  vec_pb <- (data$h_tot>50 & !is.na(data$h_tot)) | (data$crown_r>7 & !is.na(data$crown_r))
  d <- data$stem_id[ vec_pb & !is.na(vec_pb)]
  print(dim(d))
- write.csv(d, file.path('output', 'data_wrong_allo2.csv'))
-}
-
-
-map_plots <- function(df_p){
- require(maps)
- require(sp)
- map ('france', xlim = c(5, 7.2), ylim = c(44, 46.5))
- coordinates(df_p) <- c('x_lamb93', 'y_lamb93')
- proj4string(df_p) <- CRS("+init=epsg:2154")
- df_p2 <- spTransform(df_p,  CRS("+init=epsg:4326"))
- df_p$lat <-  df_p2$y_lamb2_et
- df_p$long <-  df_p2$x_lamb2_et
- points(df_p$long, df_p$lat, col = 'red')
+ write.csv(d, file.path('output', 'data_wrong_allo2.csv'), row.names = FALSE)
 }
 
 
@@ -625,7 +612,7 @@ map_plots <- function(df_p){
 table_plot <- function(df_p){
 table_p <- df_p[, c('plot_id', 'area', 'elevation', 'slope', 'aspect', 'lat',
                     'long', 'MAT', 'MAP', 'geol')]
-write.csv(table_p, file.path('output', 'table_plot.csv'))
+write.csv(table_p, file.path('output', 'table_plot.csv'), row.names = FALSE)
 }
 
 
@@ -634,13 +621,12 @@ write.csv(table_p, file.path('output', 'table_plot.csv'))
 table_stand_descrip<- function(df_p, df_m, df_c, treshold_sp= 0.1){
 require(dplyr)
 table_p2 <- df_p[, c("plot_id", "area")]
-df <- left_join(df_m, df_c[, c('stem_id', 'code_species')], by = 'stem_id')
-table_p3 <- df %>% group_by(plot_id) %>%
-                summarise(first_year = min(year),
+df <- dplyr::left_join(df_m, df_c[, c('stem_id', 'code_species')], by = 'stem_id')
+table_p3 <- df %>% dplyr::group_by(plot_id) %>%
+                dplyr::summarise(first_year = min(year),
                           n_census = n_distinct(year))
-df <- df %>% filter(code_status %in% c('0000', '8881', '8882')) %>%
-         arrange(year) %>% distinct(stem_id)
-
+df <- df %>% dplyr::filter(code_status %in% c('0', '8881', '8882')) %>%
+         dplyr::arrange(year) %>% dplyr::distinct(stem_id)
 main_sp <- tapply(df$code_species,
                   df$plot_id,
                   function(x) paste(names(table(x))[table(x)/
@@ -656,11 +642,11 @@ table_p4 <- data.frame(plot_id = names(main_sp),
                        main_sp = main_sp,
                        n_init = n_init, ba_init = ba_init,
                        stringsAsFactors = FALSE)
-tab <- left_join(table_p2, table_p3, by = 'plot_id')
-tab <- left_join(tab, table_p4, by = 'plot_id')
+tab <- dplyr::left_join(table_p2, table_p3, by = 'plot_id')
+tab <- dplyr::left_join(tab, table_p4, by = 'plot_id')
 tab$ba_init <- tab$ba_init/(tab$area * 10000)
 tab$n_init <- tab$n_init/(tab$area)
-write.csv(tab, file.path('output', 'table_stand_descrip.csv'))
+write.csv(tab, file.path('output', 'table_stand_descrip.csv'), row.names = FALSE)
 }
 
 # TABLE 3 diam min , n of height measure , n of crown radius measure, n of crown height measure, dead and stump atestablish Y/N , loc xy or quadrat
@@ -668,28 +654,28 @@ write.csv(tab, file.path('output', 'table_stand_descrip.csv'))
 
 table_stand_allo<- function(df_p, df_m, df_c){
 require(dplyr)
-df_m <- df_m %>% rowwise()  %>%
-    mutate(crown_h = mean(c(crown_h1, crown_h2,
+df_m <- df_m %>% dplyr::rowwise()  %>%
+    dplyr::mutate(crown_h = mean(c(crown_h1, crown_h2,
                             crown_h3, crown_h4),
                           na.rm = TRUE),
            crown_r = mean(c(crown_r1, crown_r2,
                             crown_r3, crown_r4),
                           na.rm = TRUE))
-tab1 <- df_m %>% group_by( plot_id) %>%
-    summarise(n_h = sum(!is.na(h_tot)),
+tab1 <- df_m %>% dplyr::group_by( plot_id) %>%
+    dplyr::summarise(n_h = sum(!is.na(h_tot)),
               n_crown_h = sum(!is.na(crown_h)),
               n_crown_r = sum(!is.na(crown_r)))
 df <- df_m %>%
-         arrange(year) %>% distinct(stem_id)
-tab2 <- df %>% group_by(plot_id) %>%
-    summarise(dead_init_tf = sum(code_status %in% c("9991", "9990"))>0)
+         dplyr::arrange(year) %>% dplyr::distinct(stem_id)
+tab2 <- df %>% dplyr::group_by(plot_id) %>%
+    dplyr::summarise(dead_init_tf = sum(code_status %in% c("9991", "9990"))>0)
 
-tab3 <- df_c%>% group_by(plot_id) %>%
-    summarise(xy_tf = sum(!is.na(x))>0)
+tab3 <- df_c%>% dplyr::group_by(plot_id) %>%
+    dplyr::summarise(xy_tf = sum(!is.na(x))>0)
 
-tab <- left_join(tab1, tab2,  by = 'plot_id')
-tab <- left_join(tab, tab3,  by = 'plot_id')
-write.csv(tab, file.path('output', 'table_stand_allo.csv'))
+tab <- dplyr::left_join(tab1, tab2,  by = 'plot_id')
+tab <- dplyr::left_join(tab, tab3,  by = 'plot_id')
+write.csv(tab, file.path('output', 'table_stand_allo.csv'), row.names = FALSE)
 }
 
 # Table 4 spwecies code and species latin name

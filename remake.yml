@@ -24,7 +24,6 @@ targets:
       - ms/metadata.html
       - ms/metadata.docx
 
-
   figures:
     depends:
       - figures/allo_error.pdf
@@ -102,9 +101,9 @@ targets:
 
   df_growth:
     command: get_data_growth()
-    depends: output/df_growth.rds
+    depends: output/df_growth.csv
 
-  output/df_growth.rds:
+  output/df_growth.csv:
     command: save_data_growth(data_m)
 
   output/tree_wrong_growth.csv:
@@ -120,6 +119,9 @@ targets:
   figures/growth_error.pdf:
     command: plot_growth_error(df_growth)
     plot: true
+
+  output/table_plot.csv:
+    command: table_plot(data_p)
 
   output/table_stand_descrip.csv:
     command: table_stand_descrip(data_p, data_m, data_c)
