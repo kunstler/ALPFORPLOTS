@@ -371,11 +371,9 @@ generate_metadata_and_save<- function(data, name_data){
 }
 
 
-generate_metadata_c <- function(data, name_data = 'data_c') generate_metadata_and_save(data, name_data )
-generate_metadata_m <- function(data, name_data = 'data_m') generate_metadata_and_save(data, name_data )
-generate_metadata_p <- function(data, name_data = 'data_p') generate_metadata_and_save(data, name_data )
-
-## TODO NEED TO FILL IN THE METADATA
+generate_metadata_c_e<- function(data, name_data = 'data_c') generate_metadata_and_save(data, name_data )
+generate_metadata_m_e<- function(data, name_data = 'data_m') generate_metadata_and_save(data, name_data )
+generate_metadata_p_e<- function(data, name_data = 'data_p') generate_metadata_and_save(data, name_data )
 
 
 data_sp_code<-  function(data_c,
@@ -678,4 +676,42 @@ tab <- dplyr::left_join(tab, tab3,  by = 'plot_id')
 write.csv(tab, file.path('output', 'table_stand_allo.csv'), row.names = FALSE)
 }
 
-# Table 4 spwecies code and species latin name
+#
+
+species_code <- function(df_c, path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"){
+code_species <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'Code_species.xlsx'),
+                       stringsAsFactors = FALSE)
+names(code_species) <- c("code_species", "Latin.name")
+df <- code_species[code_species$code_species %in% unique(df_c$code_species), ]
+write.csv(df, file.path('output', 'species_code.csv'), row.names = FALSE)
+}
+
+status_code <- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"){
+code_status <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'Code_status.xlsx'),
+                       stringsAsFactors = FALSE)
+write.csv(code_status, file.path('output', 'status_code.csv'), row.names = FALSE)
+}
+
+get_meta_c<- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"){
+df <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'metadonnees_carto.xlsx'),
+                       stringsAsFactors = FALSE)
+write.csv(df, file.path('output', 'metadata_data_c.csv'), row.names = FALSE)
+}
+
+get_meta_m<- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"){
+df <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'metadonnees_mesures.xlsx'),
+                       stringsAsFactors = FALSE)
+write.csv(df, file.path('output', 'metadata_data_m.csv'), row.names = FALSE)
+}
+
+
+get_meta_p<- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sdgrp1,share=services/EMGR/Projets/placette_foret/"){
+df <- read.xls(file.path(path_samba, 'données_autrestables',
+                                 'metadonnees_plot.xlsx'),
+                       stringsAsFactors = FALSE)
+write.csv(df, file.path('output', 'metadata_data_p.csv'), row.names = FALSE)
+}

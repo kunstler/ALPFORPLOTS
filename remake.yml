@@ -37,6 +37,9 @@ targets:
       - data_m
       - data_p
       - df_growth
+      - output/metadata_data_c_e.csv
+      - output/metadata_data_m_e.csv
+      - output/metadata_data_p_e.csv
       - output/metadata_data_c.csv
       - output/metadata_data_m.csv
       - output/metadata_data_p.csv
@@ -47,6 +50,9 @@ targets:
       - output/data_sp_code.csv
       - output/data_sp_site.csv
       - output/data_census.csv
+      - output/species_code.csv
+      - output/status_code.csv
+
 
   ms/metadata.md:
     knitr:
@@ -54,7 +60,6 @@ targets:
       auto_figure_prefix: true
     packages:
       - whisker
-      - knitcitations
     depends:
       - data
       - ms/refs.bib
@@ -87,17 +92,17 @@ targets:
     command:  save_data_p()
     depends: output/list_data.rds
 
-  output/metadata_data_c.csv:
-    command: generate_metadata_c(data_c)
+  output/metadata_data_c_e.csv:
+    command: generate_metadata_c_e(data_c)
 
-  output/metadata_data_m.csv:
-    command: generate_metadata_m(data_m)
+  output/metadata_data_m_e.csv:
+    command: generate_metadata_m_e(data_m)
 
   output/data_sp_code.csv:
     command: data_sp_code(data_c)
 
-  output/metadata_data_p.csv:
-    command: generate_metadata_p(data_p)
+  output/metadata_data_p_e.csv:
+    command: generate_metadata_p_e(data_p)
 
   df_growth:
     command: get_data_growth()
@@ -137,6 +142,21 @@ targets:
 
   output/data_sp_site.csv:
     command: data_sp_site(data_c)
+
+  output/species_code.csv:
+    command: species_code(data_c)
+
+  output/status_code.csv:
+    command: status_code()
+
+  output/metadata_data_c.csv:
+    command: get_meta_c()
+
+  output/metadata_data_m.csv:
+    command: get_meta_m()
+
+  output/metadata_data_p.csv:
+    command: get_meta_p()
 
   ms/metadata.html:
     command: render_html("ms/metadata.md")

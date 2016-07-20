@@ -51,8 +51,7 @@ df_conv <- data.frame(
      new= c('clay', 'boulder', 'limestone',  'limestone',  'limestone',
             'limestone',  'limestone',  'conglomerate',
             'conglomerate', 'greywacke', 'sandstone', 'marl', 'schist',
-            'moraine', 'gneiss', 'schist'))
-
+            'moraine', 'gneiss', 'schist'), stringsAsFactors = FALSE)
 vec_level <- levels(test$LITHOLOGIE)
 levels(test$LITHOLOGIE)[match(df_conv$old,vec_level)] <- df_conv$new
 
