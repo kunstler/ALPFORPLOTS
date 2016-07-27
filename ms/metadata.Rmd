@@ -124,7 +124,6 @@ Forest managers have gradually worried on the stability of these stands from the
 With ongoing climate change, the network is also providing important information to monitor changes in mountain forests.
 
 This dataset has also been used for a wide variety of objectives such as:
-**MARC CELA ME SEMBLE TRES LONG EST PAS SUPER INTERESSANT POUR LE READER, NON?**
 
 - To calibrate and validate an individual-based and spatially explicit forest dynamics simulation model, called Samsara2, and currently calibrated for Silver fir and Norway spruce [@Vieilledent-2010a; @Vieilledent-2010b; @Courbaud-2015].
 
