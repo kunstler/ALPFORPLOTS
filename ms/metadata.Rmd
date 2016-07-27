@@ -275,7 +275,6 @@ The following files are provided:
 
 ### B. Variable definitions for data.csv
 
-**TODO ADD DEFINITION OF CODE FROM MARC FILES**
 
 Metadata for `data_c.csv`
 

@@ -125,6 +125,10 @@ targets:
     command: plot_growth_error(df_growth)
     plot: true
 
+  figures/map.pdf:
+    command: mapplots(data_p)
+    plot: true
+
   output/table_plot.csv:
     command: table_plot(data_p)
 

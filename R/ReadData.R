@@ -364,10 +364,7 @@ generate_metadata_and_save<- function(data, name_data){
  write.csv(metadata, file.path('output',
                      paste0('metadata_',
                             name_data,
-                            '.csv')), , row.names = FALSE)
- write.csv(data, file.path('output',
-                     paste0(name_data,
-                            '.csv')), , row.names = FALSE)
+                            '_e.csv')), , row.names = FALSE)
 }
 
 
