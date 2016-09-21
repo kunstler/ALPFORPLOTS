@@ -19,8 +19,6 @@ options(citation_format = "text", max.names=2, digits=1, width = 400)
 require(bibtex)
 require(gdata)
 require(pander)
-panderOptions('round', 2)
-panderOptions('keep.trailing.zeros', TRUE)
 metadata_p <- read.csv('../output/metadata_data_p.csv',
                        stringsAsFactors = FALSE)
 metadata_c <- read.csv('../output/metadata_data_c.csv',
