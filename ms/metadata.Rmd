@@ -19,6 +19,8 @@ options(citation_format = "text", max.names=2, digits=1, width = 400)
 require(bibtex)
 require(gdata)
 require(pander)
+panderOptions('round', 2)
+panderOptions('keep.trailing.zeros', TRUE)
 metadata_p <- read.csv('../output/metadata_data_p.csv',
                        stringsAsFactors = FALSE)
 metadata_c <- read.csv('../output/metadata_data_c.csv',
@@ -156,8 +158,10 @@ Ecological conditions are very heterogeneous (Table. 1). Climate is under oceani
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
 tb_p <- read.csv(file.path('..', 'output', 'table_plot.csv'))
+tb_p[, c(2,6:8] <- format(round(tb_p[, c(2, 6:8)], 2), nsmall = 2)
+tb_p[, 3:5] <- format(round(tb_p[, 3:5], 0), nsmall = 0)
 pandoc.table(tb_p,
-             digits = 3, split.tables = 200, split.cells = 35)
+             digits = 4, split.tables = 200, split.cells = 35)
 ```
 **Table 1:** Plots description (area in ha., MAT: mean annual temperature °C, MAP: annual precipitation in mm, geol: geology class extracted based on plots location from harmonized geological map of France, BRGM 2004).
 
@@ -167,12 +171,12 @@ Forest types in the network (Table. 2) mainly consist of pure or mixed stands do
 Plots were installed from 1994 to 2004 and measured 2 to 5 times during the 1994-2015 period. Plot sizes range from `r min(data_p$area, na.rm = TRUE)` ha to `r max(data_p$area, na.rm = TRUE)` ha. At the establishment of the plots, plot densities ranges from 182 to 1328 stems.ha^-1^ and plot basal areas ranges from `r min(table_stand$ba_init, na.rm = TRUE)` to `r max(table_stand$ba_init, na.rm = TRUE)` m^2^.ha^-1^ (Table. 2).
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
-library(pander)
 table_stand <- read.csv(file.path('..', 'output', 'table_stand_descrip.csv'))
 table_stand$area <- NULL
 names(table_stand) <- c('plot_id', 'first year', 'n census', 'Main species', 'n init', 'ba init') 
+table_stand[, 5:6] <- format(round(table_stand[, 5:6], 2), nsmall = 2)
 pandoc.table(table_stand,
-             digits = 3, split.tables = 200, split.cells = 35)
+             digits = 4, split.tables = 200, split.cells = 35)
 ```
 
 **Table 2:** Plots characteristics at first census (first year: year of first census, n census: number of census, main species: species representing more than 10\% of the total basal area, n init: stem density per ha. at first census, ba init: basal area per ha. at first census in  m^2^.ha^-1^).
@@ -204,12 +208,11 @@ Crown dimensions were measured in `r nrow(table_allo[table_allo$n_crown_h>0, ])`
 Stem strata was eye-determined as follows: stand dominant height (H0) was divided in four intervals defining four strata, from the highest strata (strata 1: for tree with H ranging from 3/4 of H0 to H0) to the lowest strata (strata 4: for trees with H ranging from 0 to 1/4 of H0).
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
-library(pander)
 table_allo <- read.csv(file.path('..', 'output', 'table_stand_allo.csv'))
 names(table_allo) <- c('plot_id', 'n h', 'n crown_h', 'n crown_r', 'dead_init_tf', 'xy_tf') 
 pandoc.table(table_allo,
              caption = "",
-             digits = 3, split.tables = 200, split.cells = 35)
+             digits = 1, split.tables = 200, split.cells = 35)
 ```
 
 **Table 3:** Additional measurements per plot (n h: number of stem with height measurement, n crown_h: number of stem with crown height measurement, n crown_r: number of stem with crown radius measurement, dead_init_tf: measurement of dead tree at first census or not, xy_tf: measurement of x y coordinates or not).
@@ -218,13 +221,13 @@ pandoc.table(table_allo,
 
 ### A. Status
 
-**Latest update**: The dataset made available through this publication was processed on 27/07/2016. R code use to check the data can be retrieved from the following website [github.com/kunstler/AlpineForestData](https://github.com/kunstler/AlpineForestData).
+**Latest update**: The dataset made available through this publication was processed on 27/07/2016. R code use to check the data can be retrieved from the following website [github.com/kunstler/ALPFORPLOTS](https://github.com/kunstler/ALPFORPLOTS).
 
 **Metadata status**: Metadata are complete to last update and are stored with data.
 
 **Data verification**:
 
-Stem dbh measurement were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry measurements (stem height, crown radius and height) and checked the corresponding data for field or entry errors. Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code at [github.com/kunstler/AlpineForestData](https://github.com/kunstler/AlpineForestData)) at quantile 0.5% and 99.5% with a third degree smoothing function of the explicative variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed the Cook distance from a linear regression and identified outliers as points with a Cook distance above six times the mean Cook distance. The figures below present the points identified as outliers according to each method that remains after data verification. We checked all points that were identified as outlier through both methods.
+Stem dbh measurement were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry measurements (stem height, crown radius and height) and checked the corresponding data for field or entry errors. Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code at [github.com/kunstler/ALPFORPLOTS](https://github.com/kunstler/ALPFORPLOTS)) at quantile 0.5% and 99.5% with a third degree smoothing function of the explicative variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed the Cook distance from a linear regression and identified outliers as points with a Cook distance above six times the mean Cook distance. The figures below present the points identified as outliers according to each method that remains after data verification. We checked all points that were identified as outlier through both methods.
 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width= 9, fig.height = 7}
@@ -240,9 +243,9 @@ plot_allo_error(data_m)
 
 ### B. Accessibility
 
-**1. Storage location and medium**: The data published on Ecological Archives is the first release stored at [github.com/kunstler/AlpineForestData](https://github.com/kunstler/AlpineForestData). 
+**1. Storage location and medium**: The data published on Ecological Archives is the first release stored at [github.com/kunstler/ALPFORPLOTS](https://github.com/kunstler/ALPFORPLOTS). 
 
-If you notice any problems with the dataset, please list an issue at [github.com/kunstler/AlpineForestData](https://github.com/kunstler/AlpineForestData).
+If you notice any problems with the dataset, please list an issue at [github.com/kunstler/ALPFORPLOTS](https://github.com/kunstler/ALPFORPLOTS).
 
 **Contact persons**:
 
