@@ -1,6 +1,6 @@
 ---
-title:  '*Ecological Archives* Exxxxx'
-subtitle: 'Fuhr M. *et al* Long-term stem inventory data from mountain forest plots in France. *Ecology* xxxx'
+title:  'Long-term stem inventory data from mountain forest plots in France.'
+subtitle: 'data paper submitted to *Ecology*'
 bibliography: refs.bib
 csl: "ecology.csl"
 ---
