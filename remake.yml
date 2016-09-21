@@ -16,17 +16,11 @@ targets:
     depends:
       - manuscript
       - data
-      - figures
 
   manuscript:
     depends:
       - ms/metadata.html
       - ms/metadata.docx
-
-  figures:
-    depends:
-      - figures/allo_error.pdf
-      - figures/growth_error.pdf
 
 
   data:
@@ -38,9 +32,6 @@ targets:
       - output/table_plot.csv
       - output/table_stand_descrip.csv
       - output/table_stand_allo.csv
-      - output/data_sp_code.csv
-      - output/data_sp_site.csv
-      - output/data_census.csv
       - output/species_code.csv
       - output/status_code.csv
       - output/metadata_data_p.csv

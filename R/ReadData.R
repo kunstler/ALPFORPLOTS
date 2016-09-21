@@ -200,7 +200,7 @@ table_p3 <- df %>% dplyr::group_by(plot_id) %>%
                 dplyr::summarise(first_year = min(year),
                           n_census = n_distinct(year))
 df <- df %>% dplyr::filter(code_status %in% c('0', '8881', '8882')) %>%
-         dplyr::arrange(year) %>% dplyr::distinct(stem_id)
+         dplyr::arrange(year) %>% dplyr::distinct(stem_id, .keep_all = TRUE)
 main_sp <- tapply(df$code_species,
                   df$plot_id,
                   function(x) paste(names(table(x))[table(x)/
@@ -239,7 +239,7 @@ tab1 <- df_m %>% dplyr::group_by( plot_id) %>%
               n_crown_h = sum(!is.na(crown_h)),
               n_crown_r = sum(!is.na(crown_r)))
 df <- df_m %>%
-         dplyr::arrange(year) %>% dplyr::distinct(stem_id)
+         dplyr::arrange(year) %>% dplyr::distinct(stem_id, .keep_all = TRUE)
 tab2 <- df %>% dplyr::group_by(plot_id) %>%
     dplyr::summarise(dead_init_tf = sum(code_status %in% c("9991", "9990"))>0)
 
