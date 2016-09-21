@@ -156,7 +156,7 @@ Ecological conditions are very heterogeneous (Table. 1). Climate is under oceani
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
 tb_p <- read.csv(file.path('..', 'output', 'table_plot.csv'))
-tb_p[, c(2,6:8] <- format(round(tb_p[, c(2, 6:8)], 2), nsmall = 2)
+tb_p[, c(2,6:8)] <- format(round(tb_p[, c(2, 6:8)], 2), nsmall = 2)
 tb_p[, 3:5] <- format(round(tb_p[, 3:5], 0), nsmall = 0)
 pandoc.table(tb_p,
              digits = 4, split.tables = 200, split.cells = 35)
