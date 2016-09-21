@@ -10,7 +10,7 @@ In addition the code computes growth and do several quality check and generate t
 ## Installation
 
 
-The following code work with `remake` can be installed directly in R
+The following code work with `remake` which can be installed directly in R
 
 - remake: `devtools::install_github("richfitz/remake")`
 
