@@ -52,11 +52,12 @@ Dominant management system in the French Alps forests is uneven-aged management 
 Plots were established from 1994 to 2004 and measured 2 to 5 times during the 1994-2015 period. Plots were initially established to sample a wide range of forest structure and successional stages to evaluate the forest dynamics across succession. They were then used to calibrate a forest dynamic model Samsara2 [@Courbaud-2015] and to test various silviculture practices. They are now also used to evaluate various ecosystem services (habitat quality, protection against natural hazard efficiency,…). The network now represents a promising tool to evaluate the response of mountain forest ecosystems to the combined effect of climate and management changes.
 
 
-```{r echo=FALSE, warning=FALSE,  message=FALSE, fig.width= 9, fig.height = 7}
-#to improve
-mapplots(data_p)
-```
-**Figure 1** Plots distribution in France. Red points are plots locations (note that several plots have very close coordinates and their points are overlapping).
+<!-- ```{r echo=FALSE, warning=FALSE,  message=FALSE, fig.width= 9, fig.height = 7} -->
+<!-- mapplots(data_p) -->
+<!-- ``` -->
+
+![**Figure 1** Plots distribution in France. Red points are plots locations (note that several plots have very close coordinates and their points are overlapping).](../figures/map.png)
+
 
 
 
