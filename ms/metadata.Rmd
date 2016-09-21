@@ -29,14 +29,14 @@ code_species <- read.csv('../output/species_code.csv',
                        stringsAsFactors = FALSE)
 code_status <- read.csv('../output/status_code.csv',
                        stringsAsFactors = FALSE)
-source(file.path('..', 'R', 'ReadData.R'))
 data_c <- read.csv('../output/data_c.csv')
 data_m <- read.csv('../output/data_m.csv')
 data_p <- read.csv('../output/data_p.csv')
 data_p <- data_p[data_p$paper_yn == "yes", ]
-df_growth <- readRDS('../output/df_growth.rds')
+df_growth <- read.csv('../output/df_growth.csv')
 table_stand <- read.csv(file.path('..', 'output', 'table_stand_descrip.csv'))
 table_allo <- read.csv(file.path('..', 'output', 'table_stand_allo.csv'))
+tb_p <- read.csv(file.path('..', 'output', 'table_plot.csv'))
 ```
 
 
@@ -155,7 +155,6 @@ Plots are located in the northern French Alps. Plot location (see Table. 1) is e
 Ecological conditions are very heterogeneous (Table. 1). Climate is under oceanic (high precipitations all year long), continental (low precipitations, high seasonality of the temperature) and mediterranean (high temperatures and low precipitations) influences and can be divided into five climatic sectors: external northern sector with an oceanic climate, external southern sector with an oceanic-mediterranean climate, intermediate northern sector with an oceanic-continental climate, internal sector with a continental climate and intermediate southern sector mixing the influences of the three climates. Geology is also highly variable including calcareous and crystalline rocks, schists, alluvium, moraines… (see Table 1 for details per plot). Topography is very variable, plot elevation range  from `r min(data_p$elevation, na.rm = TRUE)` (lower limit of the montane belt) to `r max(data_p$elevation, na.rm = TRUE)` m a.s.l (subalpine belt). Plot slope is derived from a 1/25000 DEM and ranges from `r min(data_p$slope, na.rm = TRUE)` to  `r max(data_p$slope, na.rm = TRUE)`°.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
-tb_p <- read.csv(file.path('..', 'output', 'table_plot.csv'))
 tb_p[, c(2,6:8)] <- format(round(tb_p[, c(2, 6:8)], 2), nsmall = 2)
 tb_p[, 3:5] <- format(round(tb_p[, 3:5], 0), nsmall = 0)
 pandoc.table(tb_p,

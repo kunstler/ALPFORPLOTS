@@ -1,5 +1,7 @@
-## Map plopt with inset
+## Map plot with inset this only work with the private GIS data available
 
+
+## This function is based on http://r-nold.blogspot.fr/2014/06/creating-inset-map-with-ggplot2.html
 mapplots <- function(df){
 
 require(grid)

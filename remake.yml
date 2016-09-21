@@ -31,26 +31,21 @@ targets:
 
   data:
     depends:
-      - output/list_data.rds
       - data_c
       - data_m
       - data_p
       - df_growth
-      - output/metadata_data_c_e.csv
-      - output/metadata_data_m_e.csv
-      - output/metadata_data_p_e.csv
-      - output/metadata_data_c.csv
-      - output/metadata_data_m.csv
-      - output/metadata_data_p.csv
       - output/table_plot.csv
       - output/table_stand_descrip.csv
       - output/table_stand_allo.csv
-      - output/data_wrong_allo2.csv
       - output/data_sp_code.csv
       - output/data_sp_site.csv
       - output/data_census.csv
       - output/species_code.csv
       - output/status_code.csv
+      - output/metadata_data_p.csv
+      - output/metadata_data_m.csv
+      - output/metadata_data_c.csv
 
 
   ms/metadata.md:
@@ -64,69 +59,23 @@ targets:
       - ms/refs.bib
       - R/ms.R
 
-  output/list_data.rds:
-    command: read_all_data_and_clean()
-
   data_c:
-    command:  get_data_c()
-    depends: output/data_c.csv
-
-  output/data_c.csv:
-    command:  save_data_c()
-    depends: output/list_data.rds
+    command:  get_data("output/data_c.csv")
 
   data_m:
-    command:  get_data_m()
-    depends: output/data_m.csv
-
-  output/data_m.csv:
-    command:  save_data_m()
-    depends: output/list_data.rds
+    command:  get_data("output/data_m.csv")
 
   data_p:
-    command:  get_data_p()
-    depends: output/data_p.csv
-
-  output/data_p.csv:
-    command:  save_data_p()
-    depends: output/list_data.rds
-
-  output/metadata_data_c_e.csv:
-    command: generate_metadata_c_e(data_c)
-
-  output/metadata_data_m_e.csv:
-    command: generate_metadata_m_e(data_m)
+    command:  get_data("output/data_p.csv")
 
   output/data_sp_code.csv:
     command: data_sp_code(data_c)
 
-  output/metadata_data_p_e.csv:
-    command: generate_metadata_p_e(data_p)
-
   df_growth:
-    command: get_data_growth()
-    depends: output/df_growth.csv
+    command: get_data('output/df_growth.csv')
 
   output/df_growth.csv:
     command: save_data_growth(data_m)
-
-  output/tree_wrong_growth.csv:
-    command: save_growth_error(df_growth)
-
-  output/tree_wrong_allo.csv:
-    command: save_allo_error(data_m)
-
-  figures/allo_error.pdf:
-    command: plot_allo_error(data_m)
-    plot: true
-
-  figures/growth_error.pdf:
-    command: plot_growth_error(df_growth)
-    plot: true
-
-  figures/map.pdf:
-    command: mapplots(data_p)
-    plot: true
 
   output/table_plot.csv:
     command: table_plot(data_p)
@@ -136,30 +85,6 @@ targets:
 
   output/table_stand_allo.csv:
     command: table_stand_allo(data_p, data_m, data_c)
-
-  output/data_wrong_allo2.csv:
-    command: save_allo_error(data_m)
-
-  output/data_census.csv:
-    command: data_census(data_m)
-
-  output/data_sp_site.csv:
-    command: data_sp_site(data_c)
-
-  output/species_code.csv:
-    command: species_code(data_c)
-
-  output/status_code.csv:
-    command: status_code()
-
-  output/metadata_data_c.csv:
-    command: get_meta_c()
-
-  output/metadata_data_m.csv:
-    command: get_meta_m()
-
-  output/metadata_data_p.csv:
-    command: get_meta_p()
 
   ms/metadata.html:
     command: render_html("ms/metadata.md")
