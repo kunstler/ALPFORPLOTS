@@ -4,7 +4,6 @@ packages:
   - maps
   - parallel
   - MASS
-  - mvoutlier
   - quantreg
   - splines
   - bibtex
