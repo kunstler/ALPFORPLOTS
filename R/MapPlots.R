@@ -2,11 +2,11 @@
 
 mapplots <- function(df){
 
+require(grid)
 require(gridExtra)
 require(dplyr)
  require(raster)
  require(rgdal)
- require("rgdal") # requires sp, will use proj.4 if installed
   require("maptools")
   require("ggplot2")
  path_dem <- "/run/user/1001/gvfs/smb-share:server=syno,share=ign/BD_ALTI/500m/mnt_500m_rgf"
