@@ -1,5 +1,5 @@
 ---
-title:  'Long-term stem inventory data from mountain forest plots in France.'
+title:  'Long-term tree inventory data from mountain forest plots in France.'
 subtitle: 'data paper submitted to *Ecology*'
 bibliography: refs.bib
 csl: "ecology.csl"
@@ -47,7 +47,7 @@ The data set we present consists of a network of 63 forested permanent plots in 
 
 Analyse of archival maps from the beginning of the 19^th^ century and aerial photographs from the mid-20^th^ century, have attested that French Alps forests have been continuously forested for more than 200 years [@Janssen-2016]. Most of these ancient forests are now covered by uneven-aged forest stands. Most of the plots were established in such stands. In contrast, some plots were established in stands that originate either from colonization of abandoned agricultural lands or from anthropogenic rehabilitation of degraded lands at the end of the 19th century, that now consist of even-aged stands. 
 
-The dominant management system in the French Alps forests is uneven-aged management and consists of single-tree or small-group selection cutting. Moreover, harvesting rate has been very low for the last 150 years, because forests are being retained to protect the land agians natural hazards (snow avalanches, rock falls, erosion) and because of the decrease in the price of wood. Therefore, in comparison with other lowland European forests, forests in the French Alps are enriched in large and old trees and deadwood, and the stand structure is rather heterogeneous [@Paillet-2015]. Consequently, they are considered biodiversity hotspots [@EEA-2010; @Barbati-2014] with high protection, conservation, and economical values. 
+The dominant management system in the French Alps forests is uneven-aged management and consists of single-tree or small-group selection cutting. Moreover, harvesting rate has been very low for the last 150 years, because forests are being retained to protect the land against natural hazards (snow avalanches, rock falls, erosion) and because of the decrease in the price of wood. Therefore, in comparison with other lowland European forests, forests in the French Alps are enriched in large and old trees and deadwood, and the stand structure is rather heterogeneous [@Paillet-2015]. Consequently, they are considered biodiversity hotspots [@EEA-2010; @Barbati-2014] with high protection, conservation, and economical values. 
 
 Plots were established from 1994 to 2004 and re-measured 2 to 5 times during the 1994-2015 period. Plots were initially established to sample a wide range of forest structure and successional stages to evaluate the forest dynamics through stand development. Data from these plots were then used to calibrate a forest dynamic model Samsara2 [@Courbaud-2015] and to test various silviculture practices. They are now being used to evaluate various ecosystem services (e.g., habitat quality, protection against natural hazard efficiency). The network now represents a promising tool to evaluate the response of mountain forest ecosystems to the combined effect of change in climate and management practices.
 
@@ -66,7 +66,7 @@ Plots were established from 1994 to 2004 and re-measured 2 to 5 times during the
 ## METADATA CLASS I. DATA SET DESCRIPTORS
 
 ### A. DATA SET IDENTITY
-Long-term stem inventory data from mountain forest plots in France.
+Long-term tree inventory data from mountain forest plots in France.
 
 ### B. DATA SET IDENTIFICATION CODE:
 
@@ -110,7 +110,7 @@ France; permanent plot; mountain forest; tree recruitment; tree growth; tree mor
 
 ### A. "OVERALL" PROJECT DESCRIPTION
 
-**1. Identity**: Long-term stem inventory data from mountain forest plots in France.
+**1. Identity**: Long-term tree inventory data from mountain forest plots in France.
 
 **2. Originators**:
 
@@ -177,7 +177,7 @@ pandoc.table(table_stand,
              digits = 4, split.tables = 200, split.cells = 35)
 ```
 
-**Table 2:** Plots characteristics at first census (first year, year of first census; n census, number of census; main species, species representing more than 10\% of the total basal area; n init, stem density per ha at first census; ba init, basal area per ha at first census in  m^2^ha^-1^). Species code explanations can be found in paragraph CLASS IV B (Species code for data_c.csv)
+**Table 2:** Plots characteristics at first census (first year, year of first census; n census, number of census; main species, species representing more than 10\% of the total basal area; n init, tree density per ha at first census; ba init, basal area per ha at first census in  m^2^ha^-1^). Species code explanations can be found in paragraph CLASS IV B (Species code for data_c.csv)
 
 **3. Research methods**:
 
@@ -199,13 +199,15 @@ Tree diameters were measured using the following rules:
 
 8. When a tree was not found or when field workers forgot to measure a tree, the `code_status` of the tree was modified (`code_status` = 8880) and the dbh was not measured. 
 
-In 40 plots, stem position was located with x, y coordinates (in the projected plan). In 23 plots the stem position was only located within subplots of 0.25 ha square called quadrats (Table 3). 
+In 40 plots, tree position was located with x, y coordinates (in the projected plan). In 23 plots the tree position was only located within subplots of 0.25 ha square called quadrats (Table 3). 
 
-Stem height was measured in `r nrow(table_allo[table_allo$n_h>0, ])` plots on a subset of trees, mostly during the first census (Table. 3). It was defined as the distance from the ground to the uppermost growing tip either using the triangulation method (base distance and slope angle) with a clinometer and a measuring tape or using a Vertex IV ultrasonic hypsometer (Haglof).
+Tree height was measured in `r nrow(table_allo[table_allo$n_h>0, ])` plots on a subset of trees, mostly during the first census (Table. 3). It was defined as the distance from the ground to the uppermost growing tip either using the triangulation method (base distance and slope angle) with a clinometer and a measuring tape or using a Vertex IV ultrasonic hypsometer (Haglof).
 
-Crown dimensions were measured in `r nrow(table_allo[table_allo$n_crown_h>0, ])` plots on a subset of trees, during the first census (Table. 3). They were measured in four perpendicular directions (1 to 4) or two opposite directions (1 and 3). The first direction was on the uphill side of the stem, the third direction was opposite (downhill) and the second/fourth directions were left/right, respectively, of the first dimension. For each direction, crown height (height of the lowest branch) was measured either using triangulation method or Vertex IV. Crown radius (projected plan distance between the trunk and the outermost tip of the largest branch) was measured using a measuring tape.
+Crown dimensions were measured in `r nrow(table_allo[table_allo$n_crown_h>0, ])` plots on a subset of trees, during the first census (Table. 3). They were measured in four perpendicular directions (1 to 4) or two opposite directions (1 and 3). The first direction was on the uphill side of the tree, the third direction was opposite (downhill) and the second/fourth directions were left/right, respectively, of the first dimension. For each direction, crown height (height of the lowest branch) was measured either using triangulation method or Vertex IV. Crown radius (projected plan distance between the trunk and the outermost tip of the largest branch) was measured using a measuring tape.
 
-Stem strata was visually determined as follows: stand dominant height (H0) was divided in four intervals defining four strata, from the highest strata (strata 1: for tree with height (H) ranging from 3/4 of H0 to H0) to the lowest strata (strata 4: for trees with H ranging from 0 to 1/4 of H0).
+Tree stratum was visually determined as follows: stand dominant height (H0) was divided in four intervals defining four strata, from the highest stratum (stratum 1: for tree with height (H) ranging from 3/4 of H0 to H0) to the lowest stratum (stratum 4: for trees with H ranging from 0 to 1/4 of H0).
+
+The year when a tree reached 1,3 m was determined by coring in [] plots on a subset of trees.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
 table_allo <- read.csv(file.path('..', 'output', 'table_stand_allo.csv'))
@@ -215,19 +217,19 @@ pandoc.table(table_allo,
              digits = 1, split.tables = 200, split.cells = 35)
 ```
 
-**Table 3:** Additional measurements per plot (n h, number of stems with height measurement; n crown_h, number of stems with crown height measurement; n crown_r, number of stems with crown radius measurement; dead_init_tf, measurement of dead tree at first census or not; xy_tf: measurement of x y coordinates or not).
+**Table 3:** Additional measurements per plot (n h, number of trees with height measurement; n crown_h, number of trees with crown height measurement; n crown_r, number of trees with crown radius measurement; n year_1.30m, number of cored trees; dead_init_tf, measurement of dead tree at first census or not; xy_tf: measurement of x y coordinates or not).
 
 ## CLASS III. DATA SET STATUS AND ACCESSIBILITY
 
 ### A. Status
 
-**Latest update**: The dataset being made available through this publication was processed on 27/07/2016. R code use to check the data can be retrieved from the following website [github.com/kunstler/ALPFORPLOTS](https://github.com/kunstler/ALPFORPLOTS).
+**Latest update**: The dataset being made available through this publication was processed on 27/07/2016. R code use to check the data can be retrieved from the attached file alpforplots.zip (R directory, ReadData file).
 
 **Metadata status**: Metadata are current with last update and are stored with the data.
 
 **Data verification**:
 
-Stem dbh measurements were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry measurements (stem height, crown radius and height) and checked the corresponding data for field measurement or data entry errors. Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code at [github.com/kunstler/ALPFORPLOTS](https://github.com/kunstler/ALPFORPLOTS)) at quantile 0.5% and 99.5% with a third degree smoothing function of the explanatory variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed Cook's distances from a linear regression and identified outliers as points with a Cook's distance greater than six times the mean Cook's distance. The figures below present the points identified as outliers according to each method that remained after data verification. We checked all points that were identified as outliers through both methods.
+Tree dbh measurements were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry measurements (tree height, crown radius and height) and checked the corresponding data for field measurement or data entry errors. Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code in the attached file alpforplots.zip, R directory, ReadData file) at quantile 0.5% and 99.5% with a third degree smoothing function of the explanatory variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed Cook's distances from a linear regression and identified outliers as points with a Cook's distance greater than six times the mean Cook's distance. The figures below present the points identified as outliers according to each method that remained after data verification. We checked all points that were identified as outliers through both methods.
 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width= 9, fig.height = 7}
@@ -243,7 +245,7 @@ plot_allo_error(data_m)
 
 ### B. Accessibility
 
-**1. Storage location and medium**: The data published on Ecological Archives is the first release stored at [github.com/kunstler/ALPFORPLOTS](https://github.com/kunstler/ALPFORPLOTS). 
+**1. Storage location and medium**: The data are stored in the attached file alpforplots.zip (output directory)
 
 **Contact persons**:
 
