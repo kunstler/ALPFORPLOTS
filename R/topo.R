@@ -4,8 +4,8 @@ GetTopo <- function(df_p){
 
  require(raster)
  require(rgdal)
- path_dem <- "/run/user/1001/gvfs/smb-share:server=syno,share=ign/BD_ALTI/25m/France_Entiere"
 
+ path_dem <- "/run/user/1001/gvfs/smb-share:server=data2.grenoble.cemagref.fr,share=infogeo/ign/BD_ALTI/25m/France_Entiere"
  dem <- raster(file.path(path_dem, "france_mnt_2154.tif"))
  # in L93
  x_min <- min(df_p$x_lamb93, na.rm = TRUE) - 4000

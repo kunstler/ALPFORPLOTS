@@ -39,9 +39,6 @@ targets:
       - output/metadata_data_c_e.csv
       - output/metadata_data_m_e.csv
       - output/metadata_data_p_e.csv
-      - output/metadata_data_c.csv
-      - output/metadata_data_m.csv
-      - output/metadata_data_p.csv
       - output/table_plot.csv
       - output/table_stand_descrip.csv
       - output/table_stand_allo.csv
@@ -51,6 +48,18 @@ targets:
       - output/data_census.csv
       - output/species_code.csv
       - output/status_code.csv
+
+
+  data_paper:
+    depends:
+      - output/data_c.csv
+      - output/data_m.csv
+      - output/data_p.csv
+      - output/species_code.csv
+      - output/status_code.csv
+      - output/metadata_data_c.csv
+      - output/metadata_data_m.csv
+      - output/metadata_data_p.csv
 
 
   ms/metadata.md:
@@ -103,6 +112,15 @@ targets:
   output/metadata_data_p_e.csv:
     command: generate_metadata_p_e(data_p)
 
+  output/metadata_data_c.csv:
+    command: get_meta_c()
+
+  output/metadata_data_m.csv:
+    command: get_meta_m()
+
+  output/metadata_data_p.csv:
+    command: get_meta_p()
+
   df_growth:
     command: get_data_growth()
     depends: output/df_growth.csv
@@ -151,15 +169,6 @@ targets:
 
   output/status_code.csv:
     command: status_code()
-
-  output/metadata_data_c.csv:
-    command: get_meta_c()
-
-  output/metadata_data_m.csv:
-    command: get_meta_m()
-
-  output/metadata_data_p.csv:
-    command: get_meta_p()
 
   ms/metadata.html:
     command: render_html("ms/metadata.md")
