@@ -13,20 +13,20 @@ get_data <-  function(ff) read.csv(ff,
 ### Growth error
 
 growth_dead_tree <- function(i, data, yy, j){
- dbh1 <- data[data$stem_id== j &
+ dbh1 <- data[data$tree_id== j &
               data$year == yy[i], 'dbh']
- dbh2 <- data[data$stem_id== j &
+ dbh2 <- data[data$tree_id== j &
               data$year == yy[i+1], 'dbh']
- df <- data.frame(stem_id = j,
+ df <- data.frame(tree_id = j,
                   year1 = yy[i], year2 = yy[i+1],
                   dbh1 = dbh1, dbh2 = dbh2,
-                  code_diam1 = data[data$stem_id== j &
+                  code_diam1 = data[data$tree_id== j &
                                     data$year == yy[i], 'code_diam'],
-                  code_diam2 = data[data$stem_id== j &
+                  code_diam2 = data[data$tree_id== j &
                                     data$year == yy[i+1], 'code_diam'],
-                  code_status1 = data[data$stem_id== j &
+                  code_status1 = data[data$tree_id== j &
                                     data$year == yy[i], 'code_status'],
-                  code_status2 = data[data$stem_id== j &
+                  code_status2 = data[data$tree_id== j &
                                     data$year == yy[i+1], 'code_status']
                   )
  return(df)
@@ -34,7 +34,7 @@ growth_dead_tree <- function(i, data, yy, j){
 
 
 growth_tree_all <- function(j, df){
-years <- sort(df[df$stem_id== j, ]$year)
+years <- sort(df[df$tree_id== j, ]$year)
 list_t <- vector('list')
 list_t <- lapply(seq_len(length(years) -1), growth_dead_tree, df, years, j)
 res <- do.call(rbind, list_t)
@@ -44,7 +44,7 @@ return(res)
 save_data_growth <-  function(df){
 require(parallel)
 cl <- makeCluster(12, type="FORK")
-trees_ids<- unique(df$stem_id)
+trees_ids<- unique(df$tree_id)
 list_all <- parLapply(cl, trees_ids, growth_tree_all, df)
 stopCluster(cl)
 res <- do.call(rbind, list_all)
@@ -69,7 +69,7 @@ cook_outlier_detec <- function(df, x, y){
  a <- cbind(df, d1, r)
  a_out <- a[d1 > 6*mean(d1), ]
  points(a_out[[x]], a_out[[y]], pch = 4)
- return(a_out$stem_id)
+ return(a_out$tree_id)
 }
 
 
@@ -98,7 +98,7 @@ plot_quant_reg <- function(df, x, y,
          points(df[vec_pb, x], df[vec_pb, y], pch = 16, col = 'red')
          df[[paste0('tau',tau)]] <- vec_pb
          }
- return(df$stem_id[apply(df[, paste0('tau', probs_vec)], MARGIN = 1, sum)>0])
+ return(df$tree_id[apply(df[, paste0('tau', probs_vec)], MARGIN = 1, sum)>0])
 }
 
 plot_growth_error <-  function(df){
@@ -118,7 +118,7 @@ save_growth_error <-  function(df){
  quant_id <- plot_quant_reg(df, 'dbh1', 'G')
  cook_id <- cook_outlier_detec(df, 'dbh1', 'G')
  all_id <- c(as.character(quant_id), as.character(cook_id))
- write.csv(data.frame(stem_id = df[df$stem_id %in% all_id[duplicated(all_id)], ]),
+ write.csv(data.frame(tree_id = df[df$tree_id %in% all_id[duplicated(all_id)], ]),
            file = file.path('output', 'tree_wrong_growth.csv'),
            row.names = FALSE)
 }
@@ -167,13 +167,13 @@ save_allo_error <-  function(data){
  cook_outlier_detec(data, 'dbh', 'crown_r')
  vec_pb <- data$h_tot/apply(data[ , paste0('crown_h', 1:4)],
                              MARGIN = 1, mean, na.rm = TRUE)<1
- outlier_3 <- data$stem_id[vec_pb & !is.na(vec_pb)]
- write.csv(data.frame(stem_id = unique(c(quant_id_1, quant_id_2, outlier_3))),
+ outlier_3 <- data$tree_id[vec_pb & !is.na(vec_pb)]
+ write.csv(data.frame(tree_id = unique(c(quant_id_1, quant_id_2, outlier_3))),
            file = file.path('output', 'tree_wrong_allo.csv'),
            row.names = FALSE)
 
  vec_pb <- (data$h_tot>50 & !is.na(data$h_tot)) | (data$crown_r>7 & !is.na(data$crown_r))
- d <- data$stem_id[ vec_pb & !is.na(vec_pb)]
+ d <- data$tree_id[ vec_pb & !is.na(vec_pb)]
  print(dim(d))
  write.csv(d, file.path('output', 'data_wrong_allo2.csv'), row.names = FALSE)
 }
@@ -195,12 +195,12 @@ write.csv(table_p, file.path('output', 'table_plot.csv'), row.names = FALSE)
 table_stand_descrip<- function(df_p, df_m, df_c, treshold_sp= 0.1){
 require(dplyr)
 table_p2 <- df_p[, c("plot_id", "area")]
-df <- dplyr::left_join(df_m, df_c[, c('stem_id', 'code_species')], by = 'stem_id')
+df <- dplyr::left_join(df_m, df_c[, c('tree_id', 'code_species')], by = 'tree_id')
 table_p3 <- df %>% dplyr::group_by(plot_id) %>%
                 dplyr::summarise(first_year = min(year),
                           n_census = n_distinct(year))
 df <- df %>% dplyr::filter(code_status %in% c('0', '8881', '8882')) %>%
-         dplyr::arrange(year) %>% dplyr::distinct(stem_id, .keep_all = TRUE)
+         dplyr::arrange(year) %>% dplyr::distinct(tree_id, .keep_all = TRUE)
 main_sp <- tapply(df$code_species,
                   df$plot_id,
                   function(x) paste(names(table(x))[table(x)/
@@ -239,12 +239,13 @@ tab1 <- df_m %>% dplyr::group_by( plot_id) %>%
               n_crown_h = sum(!is.na(crown_h)),
               n_crown_r = sum(!is.na(crown_r)))
 df <- df_m %>%
-         dplyr::arrange(year) %>% dplyr::distinct(stem_id, .keep_all = TRUE)
+         dplyr::arrange(year) %>% dplyr::distinct(tree_id, .keep_all = TRUE)
 tab2 <- df %>% dplyr::group_by(plot_id) %>%
     dplyr::summarise(dead_init_tf = sum(code_status %in% c("9991", "9990"))>0)
 
 tab3 <- df_c%>% dplyr::group_by(plot_id) %>%
-    dplyr::summarise(xy_tf = sum(!is.na(x))>0)
+    dplyr::summarise(xy_tf = sum(!is.na(x))>0,
+                     n_year_1m30 = sum(!is.na(year_1m30)))
 
 tab <- dplyr::left_join(tab1, tab2,  by = 'plot_id')
 tab <- dplyr::left_join(tab, tab3,  by = 'plot_id')
