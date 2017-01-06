@@ -201,7 +201,7 @@ Tree diameters were measured using the following rules:
 
 8. When a tree was not found or when field workers forgot to measure a tree, the `code_status` of the tree was modified (`code_status` = 8880) and the dbh was not measured. 
 
-In 40 plots, tree position was located with x, y coordinates (in the projected plan). In 23 plots the tree position was only located within subplots of 0.25 ha square called quadrats (Table 3). 
+In 40 plots, tree position was located with x, y coordinates (in the projected plan). In 23 plots the tree position was only located within subplots of 0.25 ha square called quadrats (Table 3). The way trees were located within the plots did not depend on plot size but on plot initial objectives: calibration and validation of forest dynamics models (x,y coordinates) or test of silvicultural practices (assignation to quadrats).
 
 Tree height was measured in `r nrow(table_allo[table_allo$n_h>0, ])` plots on a subset of trees, mostly during the first census (Table. 3). It was defined as the distance from the ground to the uppermost growing tip either using the triangulation method (base distance and slope angle) with a clinometer and a measuring tape or using a Vertex IV ultrasonic hypsometer (Haglof).
 
