@@ -1,6 +1,6 @@
 variables,type,unit,Definition
-map_year,integer,year,"Year of tree coordinates (x,y) or quadrat measurements"
 plot_id,character,NA,Name of the plot
+map_year,integer,year,"Year of tree coordinates (x,y) or quadrat measurements"
 tree_id,character,NA,Numeric identifier of the tree
 quadrat_id,integer,NA,Numeric identifier of the 0.25 ha quadrat (NA if not recorded)
 code_species,character,NA,Latin name of the tree species (see below for code meaning)
