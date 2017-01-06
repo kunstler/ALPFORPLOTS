@@ -279,6 +279,17 @@ The following files are provided:
 - `species_code.csv`: Correspondence between species code and Latin name
 - `status_code.csv`: Definition of status code
 
+**Number of observations by files**
+
+```{r results='asis', echo=FALSE, warning=FALSE}
+options(digits=9)
+data_summary <- data.frame(file = c('data_c.csv', 'data_m.csv', 'data_p.csv', 'metadata_data_c.csv', 'metadata_data_m.csv', 'metadata_data_p.csv', 'species_code.csv', 'status_code.csv'),
+                           Nobs = c(nrow(data_c), nrow(data_m), nrow(data_p),
+                                    nrow(metadata_c), nrow(metadata_m), nrow(metadata_p),
+                                    nrow(code_species), nrow(code_status))) 
+pandoc.table(data_summary,
+             digits = 3, split.tables = 200, split.cells = 35)
+```
 
 
 ### B. Variable definitions for data.csv
@@ -321,15 +332,6 @@ pandoc.table(metadata_p,
              digits = 3, split.tables = 200, split.cells = 35)
 ```
 
-**Number of observations by files**
-
-```{r results='asis', echo=FALSE, warning=FALSE}
-options(digits=9)
-data_summary <- data.frame(file = c('data_c', 'data_m', 'data_p'),
-                           Nobs = c(nrow(data_c), nrow(data_m), nrow(data_p))) 
-pandoc.table(data_summary,
-             digits = 3, split.tables = 200, split.cells = 35)
-```
 
 ## ACKNOWLEDGMENTS
 
