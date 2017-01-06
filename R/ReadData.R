@@ -5,7 +5,7 @@
 
 
 get_data <-  function(ff) read.csv(ff,
-                                   stringsAsFactors = FALSE)
+                                    stringsAsFactors = FALSE)
 
 
 
@@ -41,7 +41,7 @@ res <- do.call(rbind, list_t)
 return(res)
 }
 
-save_data_growth <-  function(df){
+save_data_growth <-  function(df, df_c){
 require(parallel)
 cl <- makeCluster(12, type="FORK")
 trees_ids<- unique(df$tree_id)
@@ -50,6 +50,7 @@ stopCluster(cl)
 res <- do.call(rbind, list_all)
 res$G <- (res$dbh2-res$dbh1)/(res$year2-res$year1)
 res$same_code_diam <-  res$code_diam1 == res$code_diam2
+dplyr::left_join(res, df_c[, c('tree_id', 'code_species')], by = 'tree_id')
 write.csv(res, file.path('output', 'df_growth.csv'), row.names = FALSE)
 }
 
