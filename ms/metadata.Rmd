@@ -125,7 +125,7 @@ The network was initially motivated by a change in management regime in the Fren
 
 Concern, among forest managers, has been growing since the 1980's about the stability of these stands, fearing that as stand senescence sets it, large gaps will develop that are detrimental to the protective function of the forest [@Leclerc-1998]. Consequently, IRSTEA and ONF started in the 1990’s research programs that aimed at assessing forest stability (resistance and resilience) and developing silvicultural guidelines that maintain or enhance stability.
 
-With ongoing climate change, the network is also providing important information to monitor changes in mountain forests. This long-term tree inventory forest plots is thus now part of the *Zone Atelier Alpes -- ZAA* (LTER France) which is focused on global changes impacts on mountain ecosystems.
+With ongoing climate change, the network is also providing important information to monitor changes in mountain forests. This long-term tree inventory forest plots is thus now part of the *Zone Atelier Alpes -- ZAA* (LTER France) that focus on global changes impacts on mountain ecosystems.
 
 This dataset has also been used for a wide variety of objectives:
 
