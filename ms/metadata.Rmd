@@ -231,18 +231,18 @@ pandoc.table(table_allo,
 
 **Data verification**:
 
-Tree dbh measurements were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry measurements (tree height, crown radius and height) and checked the corresponding data for field measurement or data entry errors. Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code in the attached file alpforplots.zip, R directory, ReadData file) at quantile 0.5% and 99.5% with a third degree smoothing function of the explanatory variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed Cook's distances from a linear regression and identified outliers as points with a Cook's distance greater than six times the mean Cook's distance. The figures below present the points identified as outliers according to each method that remained after data verification. We checked all points that were identified as outliers through both methods.
+Tree dbh measurements were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry measurements (tree height, crown radius and height). Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code in the attached file alpforplots.zip, R directory, ReadData file) at quantile 0.5% and 99.5% with a third degree smoothing function of the explanatory variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed Cook's distances from a linear regression and identified outliers as points with a Cook's distance greater than six times the mean Cook's distance. As an exemple, the figures below present the points identified as outliers by both methods. We checked all points that were identified as outliers through both methods for data entry errors and obvious errors were corrected. All the remaining outliers were left unchanged in the data in order to let data users decide whether additional data cleaning is required. 
 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width= 9, fig.height = 7}
 plot_growth_error(df_growth)
 ```
-**Figure 2** *Abies alba* diameter growth as a function of initial dbh and outliers identified using two methods; outliers identified using quantile regression (red points) and outliers identified using Cook's distance (x).
+**Figure 2** Diameter growth as a function of initial dbh and outliers identified using two methods; outliers identified using quantile regression (red points) and outliers identified using Cook's distance (x).
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width= 9, fig.height = 7}
 plot_allo_error(data_m, data_c)
 ```
-**Figure 3** Tree allometry (dbh, diameter at breast height in cm; h, tree height in m; crown radius in m, and crown height in m) and outliers identified using two methods for *Abies alba*; outliers identified using quantile regression (red points) and outliers identified using Cook's distance (x).
+**Figure 3** Tree allometry (dbh, diameter at breast height in cm; h, tree height in m; crown radius in m, and crown height in m) and outliers identified using two methods; outliers identified using quantile regression (red points) and outliers identified using Cook's distance (x).
 
 
 ### B. Accessibility
