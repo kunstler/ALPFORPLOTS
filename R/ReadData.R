@@ -14,7 +14,7 @@ read_data_plot <- function(path_samba = "/run/user/1001/gvfs/smb-share:server=sd
  names(data_p) <- c('plot_id', 'paper_yn', 'owner_id', 'management', 'year_first_mes', 'N_census',
                        'area', "x_min", "x_max", "y_min", "y_max",
                        'elevation', 'GPS_loc',
-                       'x_lamb93', 'y_lamb93')
+                       'x_lamb93', 'y_lamb93', 'x0_z', 'y0_z')
  return(data_p)
 }
 
@@ -117,6 +117,9 @@ names(df) <- c('map_year', 'map_id', 'plot_id', 'tree_id',
                    'x', 'y', 'z', 'year_1m30')
 df$tree_id <- df$map_id
 df$map_id <-  NULL
+df <- df[, c('plot_id', 'map_year', 'tree_id',
+                   'quadrat_id', 'code_species',
+                   'x', 'y', 'z', 'year_1m30')]
 return(df)
 }
 
@@ -255,7 +258,7 @@ df <-  as.data.frame(df_p)
 nn <- names(df)
 names(df)[nn == "x"] <- 'x_lamb93'
 names(df)[nn == "y"] <- 'y_lamb93'
-df <- df[, c(3:ncol(df), 1:2)]
+## df <- df[, c(3:ncol(df), 1:2)]
 return(as.data.frame(df))
 }
 
