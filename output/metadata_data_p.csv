@@ -1,6 +1,6 @@
 "variables","type","unit","definition"
 "plot_id","character",NA,"Name of the plot"
-"owner_id","character",NA,"Organization in charge of plot monitoring (IRSTEA ;  ONF: National Forest Service or PNVanoise: Vanoise National Park)"
+"owner_id","character",NA,"Organization in charge of plot monitoring (IRSTEA: National Research Institute of Science and Technology for Environment and Agriculture;  ONF: National Forest Service; PNVanoise: Vanoise National Park)"
 "management_type","character",NA,"Type of management (MAN: managed forest ; UNM: unmanaged forest)"
 "year_first_mes","integer","year","Year of the first census"
 "N_census","integer",NA,"Number of census"
