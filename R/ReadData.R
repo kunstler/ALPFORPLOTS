@@ -103,7 +103,6 @@ plot_quant_reg <- function(df, x, y,
 }
 
 plot_growth_error <-  function(df){
- df <- df[df$code_species == "ABAL", ]
  plot(df$dbh1, df$G, cex = 0.2,
       xlab = 'Intial DBH (cm)', ylab = 'Diameter Growth (cm/yr.)')
  quant_id <- plot_quant_reg(df, 'dbh1', 'G')
@@ -131,7 +130,6 @@ save_growth_error <-  function(df){
 # plots allo
 plot_allo_error <- function(data, df_c){
  data <- dplyr::left_join(data, df_c[, c('tree_id', 'code_species')], by = 'tree_id')
- data <- data[data$code_species == "ABAL", ]
  par(mfrow = c(2, 2))
  plot(data$dbh, data$h_tot, xlab = 'dbh', ylab = 'h', cex = 0.3)
  plot_quant_reg(data, 'dbh', 'h_tot')
