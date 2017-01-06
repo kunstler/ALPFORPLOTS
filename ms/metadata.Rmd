@@ -247,7 +247,7 @@ plot_allo_error(data_m, data_c)
 
 ### B. Accessibility
 
-**1. Storage location and medium**: The data are stored in the attached file alpforplots.zip (output directory)
+**1. Storage location and medium**: The data are stored in the attached file alpforplots.zip (output directory). Updated versions of the data will be available at https://forge.irstea.fr/projects/alpforplots 
 
 **Contact persons**:
 
