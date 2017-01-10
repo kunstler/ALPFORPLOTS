@@ -4,6 +4,18 @@ Code and data for a data paper describing the forest plots data (protocol and me
 
 This code reads the data, generates the tables and plots of the manuscript.
 
+The following files are provided in the folder `output`:
+
+- `data_c.csv`: Tree coordinates file
+- `data_m.csv`: Tree measurements file
+- `data_p.csv`: Plots description file
+- `metadata_data_c.csv`: Metadata for tree coordinates file
+- `metadata_data_m.csv`: Metadata for tree measurements file
+- `metadata_data_p.csv`: Metadata for plots description file
+- `species_code.csv`: Correspondence between species code and Latin name
+- `status_code.csv`: Definition of status code
+
+
 In addition the code computes growth and do several quality check and generate the html of the metadata description.
 
 

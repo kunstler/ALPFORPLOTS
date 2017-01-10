@@ -155,8 +155,9 @@ Plots are located in the northern French Alps. Plot location (see Table. 1) is e
 Ecological conditions are very heterogeneous (Table. 1). Climate is under oceanic (high precipitations all year long), continental (low precipitations, high seasonality of the temperature) and mediterranean (high temperatures and low precipitations) influences and can be divided into five climatic sectors: external northern sector with an oceanic climate, external southern sector with an oceanic-mediterranean climate, intermediate northern sector with an oceanic-continental climate, internal sector with a continental climate and intermediate southern sector mixing the influences of the three climates. Geology is also highly variable including calcareous and crystalline rocks, schists, alluvium, and moraines (see Table 1 for details per plot). Plot elevations range  from `r min(data_p$elevation, na.rm = TRUE)` m (lower limit of the montane belt) to `r max(data_p$elevation, na.rm = TRUE)` m a.s.l (subalpine belt). Plot slope was derived from a 1/25000 DEM and ranges from `r min(data_p$slope, na.rm = TRUE)` to  `r max(data_p$slope, na.rm = TRUE)`°.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, comment='', results="asis"}
-tb_p[, c(2,6:8)] <- format(round(tb_p[, c(2, 6:8)], 2), nsmall = 2)
+tb_p[, c(2,6:7)] <- format(round(tb_p[, c(2, 6:7)], 2), nsmall = 2)
 tb_p[, 3:5] <- format(round(tb_p[, 3:5], 0), nsmall = 0)
+tb_p[, 8] <- format(round(tb_p[, 8], 1), nsmall = 1)
 pandoc.table(tb_p,
              digits = 4, split.tables = 200, split.cells = 35)
 ```
@@ -173,7 +174,8 @@ Plots were installed from 1994 to 2004 and re-measured 2 to 5 times during the 1
 table_stand <- read.csv(file.path('..', 'output', 'table_stand_descrip.csv'))
 table_stand$area <- NULL
 names(table_stand) <- c('plot_id', 'first year', 'n census', 'Main species', 'n init', 'ba init') 
-table_stand[, 5:6] <- format(round(table_stand[, 5:6], 2), nsmall = 2)
+table_stand[, 6] <- format(round(table_stand[, 6], 2), nsmall = 2)
+table_stand[, 5] <- format(round(table_stand[, 5], 0), nsmall = 0)
 pandoc.table(table_stand,
              digits = 4, split.tables = 200, split.cells = 35)
 ```
@@ -246,7 +248,7 @@ plot_allo_error(data_m, data_c)
 
 ### B. Accessibility
 
-**1. Storage location and medium**: The data are stored in the attached file alpforplots.zip (output directory). Updated versions of the data will be available at https://forge.irstea.fr/projects/alpforplots 
+**1. Storage location and medium**: The data are stored in the attached file alpforplots.zip (output directory). Updated versions of the data will be available at https://github.com/irstea/ALPFORPLOTS .
 
 **Contact persons**:
 
