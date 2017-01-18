@@ -226,13 +226,13 @@ pandoc.table(table_allo,
 
 ### A. Status
 
-**Latest update**: The dataset being made available through this publication was processed on 10/01/2017. R code use to check the data is available at https://github.com/irstea/ALPFORPLOTS .
+**Latest update**: The dataset being made available through this publication was processed on 10/01/2017.
 
 **Metadata status**: Metadata are current with last update and are stored with the data.
 
 **Data verification**:
 
-Tree dbh measurements were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry measurements (tree height, crown radius and height). Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code in https://github.com/irstea/ALPFORPLOTS, R directory, ReadData file) at quantile 0.5% and 99.5% with a third degree smoothing function of the explanatory variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed Cook's distances from a linear regression and identified outliers as points with a Cook's distance greater than six times the mean Cook's distance. As an exemple, the figures below present the points identified as outliers by both methods. We checked all points that were identified as outliers through both methods for data entry errors and obvious errors were corrected. All the remaining outliers were left unchanged in the data in order to let data users decide whether additional data cleaning is required. 
+Tree dbh measurements were checked against previous values during the collection in the field to ensure consistency. After data entry, homogeneity in species code was checked, and xy coordinates were checked to conform to the plot dimension. We then identified outliers for growth and tree canopy allometry measurements (tree height, crown radius and height). Outliers were identified as points classified as outlier by two methods. First, we fitted a quantile regression  (package quantreg in R cran, see the R code in the .zip file, R directory, ReadData file) at quantile 0.5% and 99.5% with a third degree smoothing function of the explanatory variables (dbh for diameter annual growth, stem height and crown radius, and stem height for crown height) and identified outliers as the point outside this envelope. Secondly, we computed Cook's distances from a linear regression and identified outliers as points with a Cook's distance greater than six times the mean Cook's distance. As an exemple, the figures below present the points identified as outliers by both methods. We checked all points that were identified as outliers through both methods for data entry errors and obvious errors were corrected. All the remaining outliers were left unchanged in the data in order to let data users decide whether additional data cleaning is required. 
 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width= 9, fig.height = 7}
@@ -248,7 +248,7 @@ plot_allo_error(data_m, data_c)
 
 ### B. Accessibility
 
-**1. Storage location and medium**: The data are stored in the attached file alpforplots.zip (output directory). Updated versions of the data will be available at https://github.com/irstea/ALPFORPLOTS .
+**1. Storage location and medium**: The original data published with the data paper in ecology and the R codes to format the data are available in the provided alpforplots.zip file. Updated version will be available on https://github.com/irstea/ALPFORPLOTS with each new version identified by commit message with the version number of the update (current version 1.0.10). Version numbers will follow the [semantic versioning](http://semver.org/) guidelines.
 
 **Contact persons**:
 
