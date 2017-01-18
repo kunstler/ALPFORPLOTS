@@ -248,7 +248,7 @@ plot_allo_error(data_m, data_c)
 
 ### B. Accessibility
 
-**1. Storage location and medium**: The original data published with the data paper in ecology and the R codes to format the data are available in the provided alpforplots.zip file. Updated version will be available on https://github.com/irstea/ALPFORPLOTS with each new version identified by commit message with the version number of the update (current version 1.0.10). Version numbers will follow the [semantic versioning](http://semver.org/) guidelines.
+**1. Storage location and medium**: The original data published with the data paper in ecology and the R codes to format the data are available in the provided alpforplots.zip file. Updated version will be available on https://github.com/irstea/ALPFORPLOTS with each new version identified by commit message with the version number of the update (current version 1.0.0). Version numbers will follow the [semantic versioning](http://semver.org/) guidelines.
 
 **Contact persons**:
 
