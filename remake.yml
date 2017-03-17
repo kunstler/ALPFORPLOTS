@@ -37,6 +37,7 @@ targets:
       - output/metadata_data_p.csv
       - output/metadata_data_m.csv
       - output/metadata_data_c.csv
+      - output/MetaDataALPFORPLOTS.xml
 
 
   ms/metadata.md:
@@ -76,6 +77,9 @@ targets:
 
   output/table_stand_allo.csv:
     command: table_stand_allo(data_p, data_m, data_c)
+
+  output/MetaDataALPFORPLOTS.xml:
+    command: create_eml(data_p, data_c, data_m)
 
   ms/metadata.html:
     command: render_html("ms/metadata.md")

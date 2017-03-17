@@ -1,0 +1,816 @@
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml_1.1" packageId="5df6f9a49d8534a74e9a1992c663ecfc57d5ebc8" system="git commit of https://github.com/Irstea/ALPFORPLOTS">
+  <dataset>
+    <title>Long-term tree inventory data from mountain forest plots in France</title>
+    <creator>
+      <individualName>
+        <givenName>Marc</givenName>
+        <surName>Fuhr</surName>
+      </individualName>
+      <electronicMailAddress>marc.fuhr@irstea.fr</electronicMailAddress>
+    </creator>
+    <pubDate>2017</pubDate>
+    <abstract>We present repeated tree measurement data from 63 permanent plots in mountain forests in France. Plot elevations range from 800 (lower limit of the montane belt) to 1942 m a.s.l (subalpine belt). Forests mainly consist of pure or mixed stands dominated by European beech (Fagus sylvatica), Silver fir (Abies alba) and Norway spruce (Picea abies), in association with various broadleaved species at low elevation and with Arolla pine (Pinus cembra) at high elevation. The plot network includes 23 plots in stands that have not been managed for the last 40 years (at least) and 40 plots in plots managed according to an uneven-aged system with single-tree or small-group selection cutting. Plot sizes range from 0.2 ha to 1.9 ha. Plots were installed from 1994 to 2004 and re-measured 2 to 5 times during the 1994-2015 period. During the first census (installation), living trees more than 7.5 cm in dbh were identified, their diameter at breast height (dbh) was measured and their social status (strata) noted. Trees were spatially located, either with x, y and z coordinates (40 plots) or within subplots 0.25 ha square (23 plots). In addition, in a subset of plots (58 plots), tree heights and tree crown dimensions were measured on a subset of trees and dead standing trees and stumps were included in the census. Remeasurements after installation include live tree diameters (including recruited trees), tree status (living, damaged, dead, stump), and for a subset of trees, height. At the time of establishment of the plots, plot densities ranges from 181 to 1328 stemsha-1 and plot basal areas ranges from 13.6 to 81.3 m2ha-1 .</abstract>
+    <keywordSet>
+      <keyword>France</keyword>
+      <keyword>permanent plot</keyword>
+      <keyword>mountain forest</keyword>
+      <keyword>tree recruitment</keyword>
+      <keyword>tree growth</keyword>
+      <keyword>tree mortality</keyword>
+      <keyword>tree diameter</keyword>
+      <keyword>tree height</keyword>
+      <keyword>tree canopy radius</keyword>
+      <keyword>tree canopy height</keyword>
+      <keyword>forest management</keyword>
+      <keyword>tree spatial coordinates</keyword>
+    </keywordSet>
+    <intellectualRights>This data are freely avalaible for non-commercial scientific use (Creative Commons Attribution 3.0 Unported (CC BY 3.0) https://creativecommons.org/licenses/by/3.0/) We would appreciate that researchers contact us for collaborative projects using these data. We encourage researchers to contact us for access to new data that are added annually. This paper must be cited if data in this database are used in publications. We suggest acknowledgement in oral presentations as follows: 'data from Irstea/ONF ALPFORPLOTS supported our work'. Prospective investigators should contact us to inform us of their intent to use the data and provide us with a copy of any publication resulting from their research. Finally, it is imperative that researchers contact IRSTEA or ONF if they want to make their own additional measurements in the field to ensure forest owner authorization. The dataset is released under the Creative Commons Zero.</intellectualRights>
+    <coverage>
+      <geographicCoverage>
+        <geographicDescription>Plots are located in the northern French Alps. Plot location is either based on measurement with a differential GPS or an estimation of the position on a 1/25000 map. Ecological conditions are very heterogeneous. Climate is under oceanic (high precipitations all year long), continental (low precipitations, high seasonality of the temperature) and mediterranean (high temperatures and low precipitations) influences and can be divided into five climatic sectors: external northern sector with an oceanic climate, external southern sector with an oceanic-mediterranean climate, intermediate northern sector with an oceanic-continental climate, internal sector with a continental climate and intermediate southern sector mixing the influences of the three climates. Geology is also highly variable including calcareous and crystalline rocks, schists, alluvium, and moraines. Plot elevations range from 800 m (lower limit of the montane belt) to 1942 m a.s.l (subalpine belt). Plot slope was derived from a 1/25000 DEM and ranges from 1.5 to 41.9°.</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>5.27675289719897</westBoundingCoordinate>
+          <eastBoundingCoordinate>6.90647999131532</eastBoundingCoordinate>
+          <northBoundingCoordinate>44.6290699677316</northBoundingCoordinate>
+          <southBoundingCoordinate>46.2927989854675</southBoundingCoordinate>
+          <boundingAltitudes>
+            <altitudeMinimum>800</altitudeMinimum>
+            <altitudeMaximum>1942</altitudeMaximum>
+            <altitudeUnits>meter</altitudeUnits>
+          </boundingAltitudes>
+        </boundingCoordinates>
+      </geographicCoverage>
+      <temporalCoverage>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>1994-01-01</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2015-12-31</calendarDate>
+          </endDate>
+        </rangeOfDates>
+      </temporalCoverage>
+      <taxonomicCoverage>
+        <taxonomicClassification>
+          <taxonRankName>genus</taxonRankName>
+          <taxonRankValue>Abies</taxonRankValue>
+          <taxonomicClassification>
+            <taxonRankName>species</taxonRankName>
+            <taxonRankValue>alba</taxonRankValue>
+          </taxonomicClassification>
+        </taxonomicClassification>
+      </taxonomicCoverage>
+    </coverage>
+    <contact>
+      <individualName>
+        <givenName>Marc</givenName>
+        <surName>Fuhr</surName>
+      </individualName>
+      <organizationName>Irstea, UR EMGR</organizationName>
+      <address>
+        <deliveryPoint>2 rue de la Papeterie-BP 76</deliveryPoint>
+        <city>St-Martin-d'Hères</city>
+        <administrativeArea></administrativeArea>
+        <postalCode>F-38402</postalCode>
+        <country>France</country>
+      </address>
+      <phone>000-000-0000</phone>
+      <electronicMailAddress>marc.fuhr@irstea.fr</electronicMailAddress>
+    </contact>
+    <methods>
+      <methodStep>
+        <description>
+          <para>
+  Plot selection was based on forest structures typologies from the
+  1990ies to validate, with a diachronic approach, forest dynamics
+  patterns inferred from supposed successive structures. A first set of
+  plots was established by IRSTEA in the main structural forest types
+  and then completed by ONF at the beginning of the 2000ies to extend
+  ecocological contexts and silvicultural practices. In the same time,
+  IRSTEA developed an individual-based and spatially explicit forest
+  dynamics simulation model, called Samsara, and established additional
+  plots to calibrate and validate the successive versions of the model.
+  Moreover, specific plots called “marteloscopes” were established by
+  ONF for training purpose (logging simulations by forest managers or
+  researchers).
+</para>
+          <para>
+  The plot network includes 23 plots that have not been managed for at
+  least 40 years and 40 managed plots where the dominant management
+  system is uneven-aged management and consists of single-tree or
+  small-group selection cutting. Harvesting operations are monitored by
+  recording harvested trees. Plots were installed from 1994 to 2004 and
+  re-measured 2 to 5 times during the 1994-2015 period. Plot sizes range
+  from 0.2 ha to 1.9 ha. At the time of establishment of the plots, plot
+  densities ranges from 181 to 1328 stemsha<superscript>-1</superscript>
+  and plot basal areas ranges from 13.6 to 81.3
+  m<superscript>2</superscript>ha<superscript>-1</superscript>.
+</para>
+          <para>
+  Tree diameters were measured using the following rules:
+</para>
+          <para>
+  In 40 plots, tree position was located with x, y coordinates (in the
+  projected plan). In 23 plots the tree position was only located within
+  subplots of 0.25 ha square called quadrats. The way trees were located
+  within the plots did not depend on plot size but on plot initial
+  objectives: calibration and validation of forest dynamics models (x,y
+  coordinates) or test of silvicultural practices (assignation to
+  quadrats).
+</para>
+          <para>
+  Tree height was measured in 58 plots on a subset of trees, mostly
+  during the first census. It was defined as the distance from the
+  ground to the uppermost growing tip either using the triangulation
+  method (base distance and slope angle) with a clinometer and a
+  measuring tape or using a Vertex IV ultrasonic hypsometer (Haglof).
+</para>
+          <para>
+  Crown dimensions were measured in 31 plots on a subset of trees,
+  during the first census. They were measured in four perpendicular
+  directions (1 to 4) or two opposite directions (1 and 3). The first
+  direction was on the uphill side of the tree, the third direction was
+  opposite (downhill) and the second/fourth directions were left/right,
+  respectively, of the first dimension. For each direction, crown height
+  (height of the lowest branch) was measured either using triangulation
+  method or Vertex IV. Crown radius (projected plan distance between the
+  trunk and the outermost tip of the largest branch) was measured using
+  a measuring tape.
+</para>
+          <para>
+  Tree stratum was visually determined as follows: stand dominant height
+  (H0) was divided in four intervals defining four strata, from the
+  highest stratum (stratum 1: for tree with height (H) ranging from 3/4
+  of H0 to H0) to the lowest stratum (stratum 4: for trees with H
+  ranging from 0 to 1/4 of H0).
+</para>
+          <para>
+  The year when a tree reached 1.3 m was determined by coring in 27
+  plots on a subset of trees.
+</para>
+        </description>
+      </methodStep>
+    </methods>
+    <dataTable>
+      <entityName>data_p.csv</entityName>
+      <entityDescription>Plot data</entityDescription>
+      <physical>
+        <objectName>data_p.csv</objectName>
+        <size unit="bytes"/>
+        <dataFormat>
+          <textFormat>
+            <recordDelimiter>\n\r</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>plot_id</attributeName>
+          <attributeDefinition>Name of the plot</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Name of the plot</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>owner_id</attributeName>
+          <attributeDefinition>Organization in charge of plot monitoring (IRSTEA: National Research Institute of Science and Technology for Environment and Agriculture;  ONF: National Forest Service; PNVanoise: Vanoise National Park)</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Organization in charge of plot monitoring (IRSTEA: National Research Institute of Science and Technology for Environment and Agriculture;  ONF: National Forest Service; PNVanoise: Vanoise National Park)</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>management</attributeName>
+          <attributeDefinition>Type of management (MAN: managed forest ; UNM: unmanaged forest)</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Type of management (MAN: managed forest ; UNM: unmanaged forest)</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>year_first_mes</attributeName>
+          <attributeDefinition>Year of the first census</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>nominalYear</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>N_census</attributeName>
+          <attributeDefinition>Number of census</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>area</attributeName>
+          <attributeDefinition>Area of the plot</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>hectare</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>x_min</attributeName>
+          <attributeDefinition>Minimum value of the local x-axis</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>x_max</attributeName>
+          <attributeDefinition>Maximum value of the local x-axis</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>y_min</attributeName>
+          <attributeDefinition>Minimum value of the local y-axis</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>y_max</attributeName>
+          <attributeDefinition>Maximum value of the local y-axis</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>elevation</attributeName>
+          <attributeDefinition>Elevation a.s.l.</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>GPS_loc</attributeName>
+          <attributeDefinition>Plot location precision. GPS: differential gps measurement in the field ;  MAP: estimation of the position on a 1/25000 map</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Plot location precision. GPS: differential gps measurement in the field ;  MAP: estimation of the position on a 1/25000 map</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>x_lamb93</attributeName>
+          <attributeDefinition>x coordinate of the center of the plot (RGF93 EPSG 2154)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>y_lamb93</attributeName>
+          <attributeDefinition>y coordinate of the center of the plot (RGF93 EPSG 2154)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>x0_z</attributeName>
+          <attributeDefinition>local x coordinate of the reference point for elevation (z=0)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>y0_z</attributeName>
+          <attributeDefinition>local y coordinate of the reference point for elevation (z=0)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>lat</attributeName>
+          <attributeDefinition>Latitude of the center of the plot (WGS84 EPSG 4326)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>long</attributeName>
+          <attributeDefinition>Longitude of the center of the plot (WGS84 EPSG 4326)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>slope</attributeName>
+          <attributeDefinition>Slope of the plot extracted from a DEM (IGN 25m) </attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>aspect</attributeName>
+          <attributeDefinition>Aspect of the plot extracted from a DEM (IGN 25m) </attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>MAT</attributeName>
+          <attributeDefinition>Mean annual temperature extracted from worldclim</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>MAP</attributeName>
+          <attributeDefinition>Mean total annual precipitation extracted from worldclim</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>millimeter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>geol</attributeName>
+          <attributeDefinition>Bedrock type extracted from BRGM France map</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Bedrock type extracted from BRGM France map</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+    </dataTable>
+    <dataTable>
+      <entityName>data_c.csv</entityName>
+      <entityDescription>Tree cartography data</entityDescription>
+      <physical>
+        <objectName>data_c.csv</objectName>
+        <size unit="bytes"/>
+        <dataFormat>
+          <textFormat>
+            <recordDelimiter>\n\r</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>plot_id</attributeName>
+          <attributeDefinition>Name of the plot</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Name of the plot</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>map_year</attributeName>
+          <attributeDefinition>Year of tree coordinates (x,y) or quadrat measurements</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>nominalYear</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>tree_id</attributeName>
+          <attributeDefinition>Numeric identifier of the tree</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Numeric identifier of the tree</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>quadrat_id</attributeName>
+          <attributeDefinition>Numeric identifier of the 0.25 ha quadrat (NA if not recorded)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>code_species</attributeName>
+          <attributeDefinition>Latin name of the tree species (see below for code meaning)</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Latin name of the tree species (see below for code meaning)</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>x</attributeName>
+          <attributeDefinition>x local coordinate of the tree (NA if tree is not mapped)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>y</attributeName>
+          <attributeDefinition>y local coordinate of the tree  (NA if tree is not mapped)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>z</attributeName>
+          <attributeDefinition>Elevation above a reference point. (x,y) local coordinates of the reference point can be found in the data_p.csv file</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>year_1m30</attributeName>
+          <attributeDefinition>Year at which the tree reached a height of 1.3m determined from a core sample at 1.3 m height </attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>nominalYear</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+    </dataTable>
+    <dataTable>
+      <entityName>data_m.csv</entityName>
+      <entityDescription>Tree measurement data</entityDescription>
+      <physical>
+        <objectName>data_c.csv</objectName>
+        <size unit="bytes"/>
+        <dataFormat>
+          <textFormat>
+            <recordDelimiter>\n\r</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>plot_id</attributeName>
+          <attributeDefinition>Name of the plot</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Name of the plot</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>map_year</attributeName>
+          <attributeDefinition>Year of tree coordinates (x,y) or quadrat measurements</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>nominalYear</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>tree_id</attributeName>
+          <attributeDefinition>Numeric identifier of the tree</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Numeric identifier of the tree</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>quadrat_id</attributeName>
+          <attributeDefinition>Numeric identifier of the 0.25 ha quadrat (NA if not recorded)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>code_species</attributeName>
+          <attributeDefinition>Latin name of the tree species (see below for code meaning)</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Latin name of the tree species (see below for code meaning)</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>x</attributeName>
+          <attributeDefinition>x local coordinate of the tree (NA if tree is not mapped)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>y</attributeName>
+          <attributeDefinition>y local coordinate of the tree  (NA if tree is not mapped)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>z</attributeName>
+          <attributeDefinition>Elevation above a reference point. (x,y) local coordinates of the reference point can be found in the data_p.csv file</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>year_1m30</attributeName>
+          <attributeDefinition>Year at which the tree reached a height of 1.3m determined from a core sample at 1.3 m height </attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>nominalYear</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>integer</numberType>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+    </dataTable>
+  </dataset>
+</eml:eml>
